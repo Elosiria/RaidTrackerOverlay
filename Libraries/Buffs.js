@@ -10,7 +10,7 @@ class Buffs
 		this.skillsList.push(new Skill("Mnk", "Brotherhood", "1CE4", 90, 15))
 
 		//Physical range DPS
-		this.skillsList.push(new Skill("Brd", "Battle voice", "76", 180, 20))
+		this.skillsList.push(new Skill("Brd", "Battle Voice", "76", 180, 20))
 		this.skillsList.push(new Skill("Dnc", "Technical Step", "3E7E", 120, 15))
 
 		//Magical range DPS
