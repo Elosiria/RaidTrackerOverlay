@@ -1,0 +1,558 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+
+        /*
+            表示設定 (1)
+        */
+
+        * {
+            /* フォント （一部のフォントは上手く適用されない） */
+            font-family: "Arial";
+            font-size: 12px;
+        }
+
+        body, html {
+            margin: 0;
+        }
+
+        html {
+            height: 100%;
+
+            /* 外枠 */
+            /*border: 1px solid rgba(0,0,0,0.1);*/
+            
+            /* はみ出た内容はスクロールバーを表示させずに隠す
+             * 今のところ、ブラウザへの入力はできないので表示させても無意味 */
+            overflow: hidden;
+            
+            /* 背景色 */
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .resizeHandle {
+            /* リサイズ用のハンドル
+             * リサイズができる場所はウィンドウ右下の16x16ピクセルの場所
+             * この部分が完全に透明だとマウス入力が透過してしまってサイズを変更できなくなる */
+            background-image: url(handle.png);
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            box-sizing: border-box;
+        }
+
+        #combatantTable {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            /*background-color: rgba(0,0,0,0.5);*/
+        }
+
+        /* キャラクターデータのテキストの設定 */
+        #combatantTableBody * {
+            color: #E2EBF5;
+            /*text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;*/
+            /*text-shadow: -1px 0 3px #000000, 0 1px 3px #000000, 1px 0 3px #000000, 0 -1px 3px #000000;*/
+            font-weight: 300;
+
+            /* はみ出たテキストを「…」で省略する */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /* エンカウント情報とテーブルヘッダ内のテキストの設定 */
+        #encounter,
+        #combatantTableHeader  {
+            color: #DED7BE;
+            /*color: rgba(255,255,255,0.9);*/
+            background-color: rgba(0,0,0,0.7);
+            text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+            font-weight: 100;
+            white-space: nowrap;
+        }
+
+        /* テーブルヘッダの下線の設定 */
+        #combatantTableHeader tr {
+            /*border-bottom: 1px solid #DED7BE;*/
+        }
+
+    </style>
+    <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script> 
+    <script src="Libraries/Buffs.js"></script>
+    <script src="Libraries/Skill.js"></script>
+    <script src="Libraries/Player.js"></script> 
+    <script src="Libraries/PlayersManager.js"></script>
+    <script>
+
+        //
+        // プラグイン側から以下のような ActXiv オブジェクトとしてデータが提供される
+        //
+        // var ActXiv = {
+        //    "Encounter": {...},
+        //    "Combatant": {
+        //        "PlayerName1": {...},
+        //        "PlayerName2": {...},
+        //        ...
+        //    }
+        // };
+        //
+        // データの更新は 1 秒毎。
+        // 
+        // プラグインから onOverlayDataUpdate イベントが発行されるので、それを受信することもできる
+        // イベントハンドラの第一引数の detail プロパティ内に上記のオブジェクトが入る
+        //
+
+        //
+        // 表示設定 (2)
+        //
+
+        // エンカウント情報の定義
+        var encounterDefine = "{duration} {title} - DPS: {ENCDPS}";
+
+        // 上記のエンカウント情報を HTML として扱うなら true
+        var useHTMLEncounterDefine = false;
+
+        // ヘッダの定義
+        var headerDefine =
+        [
+            //{ text: "#", width: "5%", align: "center" },
+            { text: "", width: "5%", align: "center" },
+            { text: "Name", width: "25%", align: "left" },
+            { text: "Offensive", width: "14%", align: "left" },
+            { text: "Defensive", width: "14%", align: "left" },
+            { text: "%", width: "10%", align: "center" },
+            { text: "DPS", width: "16%", align: "center" },
+            { text: "Deaths", width: "10%", align: "center" },
+        ];
+
+        // 表示するデータの定義
+        var bodyDefine =
+        [
+            //{ text: rankingText, width: "5%", align: "center", effect: deadYatsuEffect },
+            { text: "{Job}", width: "5%", align: "center" },
+            { text: "{name}", width: "25%", align: "left" },
+            { text: "{Buffs}", width: "14%", align: "left" },
+            { text: "{Mitigations}", width: "14%", align: "left" },
+            { text: "{damage%}", width: "10%", align: "center" },
+            { text: "{encdps}", width: "16%", align: "center" },
+            { text: "{deaths}", width: "10%", align: "center" },
+            //{ text: "{StartTime}", width: "16%", align: "right" },
+        ];
+
+        var gaugesDefine =
+        {
+            Arc: "rgb(0, 0, 0)",
+            Gla: "rgb(0, 0, 0)",
+            Lnc: "rgb(0, 0, 0)",
+            Mrd: "rgb(0, 0, 0)",
+            Pgl: "rgb(0, 0, 0)",
+            Acn: "rgb(0, 0, 0)",
+            Cnj: "rgb(0, 0, 0)",
+            Thm: "rgb(0, 0, 0)",
+            Rog: "rgb(0, 0, 0)",
+            Pld: "rgb(168, 210, 230)",
+            War: "rgb(207, 38, 33)",
+            Drk: "rgb(209, 38, 204)",
+            Gnb: "rgb(121, 109, 48)",
+            Nin: "rgb(175, 25, 100)",
+            Drg: "rgb(65, 100, 205)",
+            Mnk: "rgb(214, 156, 0)",
+            Sam: "rgb(228, 109, 4)",
+            Brd: "rgb(145, 186, 94)",
+            Dnc: "rgb(226, 176, 175)",
+            Mch: "rgb(110, 225, 214)",
+            Smn: "rgb(45, 155, 120)",
+            Rdm: "rgb(232, 123, 123)",
+            Blm: "rgb(165, 121, 214)",
+            Sch: "rgb(134, 87, 255)",
+            Whm: "rgb(255, 240, 220)",
+            Ast: "rgb(255, 231, 74)"
+        };
+
+        // 順位を表示する（text に関数を指定する例）
+        // 引数:
+        //  combatant : キャラクターのデータ。combatant["..."]でデータを取得できる。
+        //  index : キャラクターの並び順。一番上は 0 で、その後は 1 ずつ増える。
+        // 戻り値: 
+        //  表示するテキスト。
+        //  ACT のタグは展開されないので、展開したい場合は parseActFormat 関数を使用してください。
+        function rankingText(combatant, index) {
+            // 1 から始まる番号を返す
+            return (index + 1).toString();
+        }
+        
+        // 死亡奴を赤くする（effect の例）
+        // 引数:
+        //  cell : セルの DOM 要素
+        //  combatant : キャラクターのデータ。combatant["..."]でデータを取得できる。
+        //  index: キャラクターの並び順。一番上は 0 で、その後は 1 ずつ増える。
+        // 戻り値: なし
+        function deadYatsuEffect(cell, combatant, index) {
+            // デス数を整数値に変換
+            var deaths = parseInt(combatant["deaths"]);
+            // デス数が 0 よりも大きいなら
+            if (deaths > 0) {
+                // 赤くする
+                cell.style.color = "#FFA0A0";
+                cell.style.textShadow = "-1px 0 3px #802020, 0 1px 3px #802020, 1px 0 3px #802020, 0 -1px 3px #802020";
+            }
+        }
+
+        //
+        // 以下表示用スクリプト
+        //
+       var used = false;
+       var playerManager = new PlayersManager();
+	   addOverlayListener("LogLine", function (e){
+            //var res = e.line.split(",");
+            playerManager.update(e.line);
+            /*if(e.line.includes("Elyre Kayato") && e.line.includes("Fountain"))
+            {
+                used = true;
+                //console.log(e.rawLine);
+            }*/
+        });
+
+        // onOverlayStateUpdate イベントを購読
+        document.addEventListener("onOverlayStateUpdate", function (e) {
+            if (!e.detail.isLocked) {
+                displayResizeHandle();
+            } else {
+                hideResizeHandle();
+            }
+        });
+
+        
+        /*addOverlayListener("ChangeZone", function (e) {
+            console.log("ChangeZone");
+        });
+        addOverlayListener("OnlineStatusChanged", function (e) {
+            console.log("OnlineStatusChanged");
+        });
+        addOverlayListener("PartyChanged", function (e) {
+            console.log("PartyChanged");
+        });
+        addOverlayListener("BroadcastMessage", function (e) {
+            console.log("BroadcastMessage");
+        });*/
+
+
+        function displayResizeHandle() {
+            document.documentElement.classList.add("resizeHandle");
+        }
+
+        function hideResizeHandle() {
+            document.documentElement.classList.remove("resizeHandle");
+        }
+
+        // CombatData イベントを購読
+        addOverlayListener("CombatData", (e) => update(e));
+        startOverlayEvents();
+
+        // 表示要素の更新
+        function update(data) {
+            updateEncounter(data);
+            if (document.getElementById("combatantTableHeader") == null) {
+                updateCombatantListHeader();
+            }
+            updateCombatantList(data);
+        }
+
+        // エンカウント情報を更新する
+        function updateEncounter(data) {
+            // 要素取得
+            var encounterElem = document.getElementById('encounter');
+            //console.log("updateEncounter: " + parseActFormat("{encid}", data.Encounter));
+            /*for (var key in data) 
+            {
+                // check if the property/key is defined in the object itself, not in parent
+                if (data.hasOwnProperty(key))
+                {           
+                    console.log(key, data[key]);
+                }
+            }
+            console.log(data.isActive);
+            console.log(" ");*/
+
+            if(data.isActive === "false")
+            {
+                playerManager.reset();
+            }
+
+            //console.log("updateEncounter: " + parseActFormat("{title}", data.Encounter));
+            // テキスト取得
+            var elementText;
+            if (typeof encounterDefine === 'function') {
+                elementText = encounterDefine(data.Encounter);
+                if (typeof elementText !== 'string') {
+                    console.log("updateEncounter: 'encounterDefine' is declared as function but not returns a value as string.");
+                    return;
+                }
+            } else if (typeof encounterDefine === 'string') {
+                elementText = parseActFormat(encounterDefine, data.Encounter);
+            } else {
+                console.log("updateEncounter: 'encounterDefine' should be string or function that returns string.");
+                return;
+            }
+
+            // テキスト設定
+            if (!useHTMLEncounterDefine) {
+                encounterElem.innerText = parseActFormat(elementText, data.Encounter);
+            } else {
+                encounterElem.innerHTML = parseActFormat(elementText, data.Encounter);
+            }
+        }
+
+        // ヘッダを更新する
+        function updateCombatantListHeader() {
+            var table = document.getElementById('combatantTable');
+            var tableHeader = document.createElement("thead");
+            tableHeader.id = "combatantTableHeader";
+            var headerRow = tableHeader.insertRow();
+
+            for (var i = 0; i < headerDefine.length; i++) {
+                var cell = document.createElement("th");
+                // テキスト設定
+                if (typeof headerDefine[i].text !== 'undefined') {
+                    cell.innerText = headerDefine[i].text;
+                } else if (typeof headerDefine[i].html !== 'undefined') {
+                    cell.innerHTML = headerDefine[i].html;
+                }
+                // 幅設定
+                cell.style.width = headerDefine[i].width;
+                cell.style.maxWidth = headerDefine[i].width;
+                // 横結合数設定
+                if (typeof headerDefine[i].span !== 'undefined') {
+                    cell.colSpan = headerDefine[i].span;
+                }
+                // 行揃え設定
+                if (typeof headerDefine[i].align !== 'undefined') {
+                    cell.style["textAlign"] = headerDefine[i].align;
+                }
+                headerRow.appendChild(cell);
+            }
+
+            table.tHead = tableHeader;
+        }
+
+        // プレイヤーリストを更新する
+        function updateCombatantList(data) {
+            // 要素取得＆作成
+            var table = document.getElementById('combatantTable');
+            var oldTableBody = table.tBodies.namedItem('combatantTableBody');
+            var newTableBody = document.createElement("tbody");
+            newTableBody.id = "combatantTableBody";
+
+            // tbody の内容を作成
+            var topDPS = -1;
+            var combatantIndex = 0;
+
+            var headergauge = newTableBody.insertRow(newTableBody.rows.length);
+            headergauge.style.width = "100%";
+            headergauge.style.height = "2px";
+            headergauge.style.position = "absolute";
+            headergauge.style.background = "rgba(0,0,0,0.7)";
+
+            for (var combatantName in data.Combatant) {
+                var combatant = data.Combatant[combatantName];
+                var tableRow = newTableBody.insertRow(newTableBody.rows.length);
+                if(topDPS === -1)
+                    topDPS = parseActFormat("{encdps}", combatant)
+                
+                var rowHeight = 20;
+                var imageSize = 18;
+                tableRow.style.height = rowHeight + "px";
+                tableRow.style.transform =  "translateY(1px)";
+                //tableRow.style.top =  "50%";
+                
+                for (var i = 0; i < bodyDefine.length; i++)
+                {
+
+                    var cell = tableRow.insertCell(i);
+                    // テキスト設定
+                    if (typeof bodyDefine[i].text !== 'undefined') {
+                        var cellText;
+                        if (typeof bodyDefine[i].text === 'function') {
+                            cellText = bodyDefine[i].text(combatant, combatantIndex);
+                        } else {
+                            if(bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}" )
+                            {
+                                cellText = null;
+                                var player = playerManager.getPlayerByName(combatantName);
+
+                                var playerJob = parseActFormat("{Job}", combatant)
+                                var list = player.buffs;
+                                if(bodyDefine[i].text === "{Mitigations}")
+                                    list = player.mitigations;
+
+                                for(j = 0; j < list.skillsList.length; j++)
+		                        {
+                                    if(list.skillsList[j].job === playerJob)
+                                    {
+                                        var img = document.createElement("img"); 
+                                        img.src =  list.skillsList[j].source; 
+                                        img.style.width = imageSize + "px";
+                                        img.style.height = imageSize + "px";
+                                        //img.style.display = "inline-block";
+                                        //img.style.float = "left";
+
+                                        var skillStatus = player.getSkillStatus(list.skillsList[j].name);
+                                        skillStatus = skillStatus + "";
+                                        skillStatus = skillStatus.split(";")
+
+                                        if(skillStatus[0] === "Active")
+                                        {
+                                            //img.style.border = "1px solid rgb(255, 204, 0)"
+                                            cell.appendChild(img);
+                                        }
+                                        else if(skillStatus[0] === "On Cooldown")
+                                        {
+                                            img.style.filter = "grayscale(100%)";
+                                            img.style.opacity = "0.5";
+                                                
+                                            var container = document.createElement("div"); 
+                                            container.style.display = "inline-block";
+                                            container.style.position = "relative";
+                                            container.style.textAlign = "center";
+                                            container.style.width = imageSize + "px";
+                                            container.style.height = imageSize + "px";
+
+                                            var div = document.createElement("div"); 
+                                            div.innerText =  skillStatus[1];
+                                            div.style.position =  "absolute";
+                                            div.style.top =  "50%";
+                                            div.style.left =  "50%";
+                                            div.style.transform =  "translate(-50%, -50%)";
+                                                
+                                            container.appendChild(img);
+                                            container.appendChild(div);
+                                            cell.appendChild(container);
+                                        }
+                                        else if(skillStatus[0] === "Off Cooldown")
+                                        {
+                                            img.style.filter = "grayscale(100%)";
+                                            cell.appendChild(img);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if(bodyDefine[i].text === "{Job}")
+                            {
+                                cellText = null;
+                                var playerJob = parseActFormat("{Job}", combatant)
+                                if(playerJob !== "")
+                                {
+                                    var img = document.createElement("img"); 
+                                    img.src =  "Assets/Jobs/" + playerJob + ".png"; 
+                                    img.style.width = imageSize + "px";
+                                    img.style.height = imageSize + "px";
+                                    cell.appendChild(img);
+                                }
+                            }
+                            else if(bodyDefine[i].text === "{encdps}")
+                            {
+                                var playerDPS = Math.floor(parseActFormat("{encdps}", combatant));
+                                //cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                                cell.innerText = playerDPS;
+                            }
+                            else
+                            {
+                                cell.innerText = parseActFormat(bodyDefine[i].text, combatant);
+                            }
+                        }
+                    } else if (typeof bodyDefine[i].html !== 'undefined') {
+                        var cellHTML;
+                        if (typeof bodyDefine[i].html === 'function') {
+                            cellHTML = bodyDefine[i].html(combatant, combatantIndex);
+                        } 
+                        else {
+                            cellHTML = parseActFormat(bodyDefine[i].html, combatant);
+                        }
+                        cell.innerHTML = cellHTML;
+                    }
+                    // 幅設定
+                    cell.style.width = bodyDefine[i].width;
+                    cell.style.maxWidth = bodyDefine[i].width;
+                    // 行構え設定
+                    if (typeof(bodyDefine[i].align) !== 'undefined') {
+                        cell.style.textAlign = bodyDefine[i].align;
+                    }
+                    // エフェクト実行
+                    if (typeof bodyDefine[i].effect === 'function') {
+                        bodyDefine[i].effect(cell, combatant, combatantIndex);
+                    }
+                }
+                combatantIndex++;
+                
+                currentDPS = parseActFormat("{encdps}", combatant)
+                currentJob = parseActFormat("{Job}", combatant)
+                var gauge = newTableBody.insertRow(newTableBody.rows.length);
+                gauge.style.width = Math.floor(currentDPS/topDPS * 100) + "%";
+                gauge.style.height = "2px";
+                gauge.style.position = "absolute";
+                if(playerJob !== "")
+                    gauge.style.background = gaugesDefine[currentJob];
+                else
+                    gauge.style.background = "rgb(255,255,255)";
+            }
+
+            // tbody が既に存在していたら置換、そうでないならテーブルに追加
+            if (oldTableBody != void(0)) 
+            {   
+                table.replaceChild(newTableBody, oldTableBody);
+            }
+            else {
+                table.appendChild(newTableBody);
+            }
+        }
+
+        // Miniparse フォーマット文字列を解析し、表示文字列を取得する
+        function parseActFormat(str, dictionary)
+        {
+            var result = "";
+
+            var currentIndex = 0;
+            do {
+                var openBraceIndex = str.indexOf('{', currentIndex);
+                if (openBraceIndex < 0) {
+                    result += str.slice(currentIndex);
+                    break;
+                }
+                else {
+                    result += str.slice(currentIndex, openBraceIndex);
+                    var closeBraceIndex = str.indexOf('}', openBraceIndex);
+                    if (closeBraceIndex < 0) {
+                        // parse error!
+                        console.log("parseActFormat: Parse error: missing close-brace for " + openBraceIndex.toString() + ".");
+                        return "ERROR";
+                    }
+                    else {
+                        var tag = str.slice(openBraceIndex + 1, closeBraceIndex);
+                        if (typeof dictionary[tag] !== 'undefined') {
+                            result += dictionary[tag];
+                        } else {
+                            console.log("parseActFormat: Unknown tag: " + tag);
+                            result += "ERROR";
+                        }
+                        currentIndex = closeBraceIndex + 1;
+                    }
+                }
+            } while (currentIndex < str.length);
+            
+            return result;
+        }
+    </script>
+</head>
+<body>
+    <div id="encounter">
+        No data to show.
+        <!-- ここにエンカウント情報が入る -->
+    </div>
+    <table id="combatantTable">
+        <!-- ここにヘッダが入る -->
+        <!-- ここに各キャラの情報が入る -->
+    </table>
+</body>
+</html>
