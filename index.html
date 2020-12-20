@@ -223,7 +223,11 @@
             }
         });
 
-        
+        addOverlayListener("ChangePrimaryPlayer", function (e) 
+        {
+            playerManager.playerCharacter = e.charName;
+        });
+
         /*addOverlayListener("ChangeZone", function (e) {
             console.log("ChangeZone");
         });
@@ -264,16 +268,16 @@
             // 要素取得
             var encounterElem = document.getElementById('encounter');
             //console.log("updateEncounter: " + parseActFormat("{encid}", data.Encounter));
-            /*for (var key in data) 
+            /*for (var key in data.Encounter) 
             {
                 // check if the property/key is defined in the object itself, not in parent
-                if (data.hasOwnProperty(key))
+                if (data.Encounter.hasOwnProperty(key))
                 {           
-                    console.log(key, data[key]);
+                    console.log(key, data.Encounter[key]);
                 }
             }
-            console.log(data.isActive);
             console.log(" ");*/
+            //console.log(data.Encounter.name);
 
             if(data.isActive === "false")
             {

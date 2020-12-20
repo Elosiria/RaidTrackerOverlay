@@ -7,6 +7,7 @@ class PlayersManager
 		this.buffList.skillsList.push(new Skill("-", "Attack", "07", 0, 0))
 		this.mitigationsList = new Mitigations();
 		this.mitigationsList.skillsList.push(new Skill("-", "Attack", "07", 0, 0))
+		this.playerCharacter = "";
 	}
 	
 	update(logLine)
@@ -82,17 +83,21 @@ class PlayersManager
 
 	getPlayerByName(name)
 	{
+		var nameToSearch = name;
+		if(name === "YOU")
+			nameToSearch = this.playerCharacter;
+
 		//console.log("Searching: " + name);
 		for(var i = 0; i < this.playerList.length; i++)
 		{
-			if(name === this.playerList[i].name)
+			if(nameToSearch === this.playerList[i].name)
 			{
 				//console.log("Found player: " + name);
 				return this.playerList[i];
 			}
 		}
 		
-		var player = new Player(name)
+		var player = new Player(nameToSearch)
 		this.playerList.push(player);
 
 		return player;
