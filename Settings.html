@@ -1,0 +1,274 @@
+﻿<html>
+	<head>
+	</head>
+	<style>
+body
+{
+  background-color: #1c1c1c;
+}
+
+h3 
+{
+	color: #DED7BE;
+	text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+}
+
+table, tr, td, th
+{
+	color: #DED7BE;
+	background-color: #272727;
+	text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+	border: 1px solid #FFFFFF;
+	border-collapse:collapse;
+	/*background-color: rgba(0,0,0,0.8);*/
+}
+
+ul, p
+{
+	color: #E2EBF5;
+	text-shadow: none;
+}
+
+.tableList
+{
+	display:table-cell;
+}
+
+.remove {
+	color: #DED7BE;
+	text-shadow: -1px 0 2px #961f17, 0 1px 2px #961f17, 1px 0 2px #961f17, 0 -1px 2px #961f17;
+	/*background-color: rgba(0,0,0,0.8);*/
+}
+	/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-style: none none outset none;
+ /* background-color: #f1f1f1;*/
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  color: #DED7BE;
+  text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+/*.tab button:hover {
+  background-color: #ddd;
+}*/
+
+/* Create an active/current tablink class */
+.tab button.active {
+  /*background-color: #ccc;*/
+  background-color: #474747;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+	</style>
+	<script>
+	function openTab(evt, tabName) {
+	  // Declare all variables
+	  var i, tabcontent, tablinks;
+
+
+	  // Get all elements with class="tabcontent" and hide them
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	  }
+
+	  // Get all elements with class="tablinks" and remove the class "active"
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+
+	  // Show the current tab, and add an "active" class to the button that opened the tab
+	  document.getElementById(tabName).style.display = "block";
+	  evt.currentTarget.className += " active";
+
+		  if(tabName ===  "columns-tab")
+		  {
+			renderAvailableColumns(availableColumnsData);
+			if(localStorage.getItem("selectedColumns") !== null)
+				usedColumnsData = localStorage.getItem("selectedColumns").split(",");
+			else
+				usedColumnsData = defaultUsedColumnsData;
+
+			renderUsedColumns(usedColumnsData);
+			}
+		}
+
+		//--------------------------------------------
+
+		var availableColumnsData = ['Job', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
+		var defaultUsedColumnsData = ['Job', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
+		var usedColumnsData = [];
+		var draggingAvailableColumns;
+		var draggingUsedColumns, draggedOverUsedColumns;
+
+		const renderAvailableColumns = (data) =>{
+		  var list = document.getElementById('availablecolumns-list')
+		  list.innerText = ''
+		  data.forEach(item=>{
+			var node = document.createElement("li");    
+			node.draggable = true
+			//node.style.backgroundColor = item
+			//node.style.backgroundColor = node.style.backgroundColor.length > 0  
+			//? item : 'lightblue'
+			node.addEventListener('drag', setDraggingAvailableColumn) 
+			node.innerText = item
+			list.appendChild(node)
+		  })
+		}
+
+		const renderUsedColumns = (data) =>{
+		  localStorage.setItem("selectedColumns", data);
+		  var list = document.getElementById('usedcolumns-list')
+		  list.innerText = ''
+		  data.forEach(item=>{
+			var node = document.createElement("li");    
+			node.draggable = true
+			//node.style.backgroundColor = item
+			//node.style.backgroundColor = node.style.backgroundColor.length > 0  
+			//? item : 'lightblue'
+			node.addEventListener('drag', setDraggingUsedeColumn) 
+			node.addEventListener('dragover', setDraggedOverUsedColumn)
+			node.addEventListener('drop', dropAvailableColumns) 
+			
+			var label = document.createElement("label"); 
+			label.style.display = "inline-block";
+			label.innerText = item
+
+			var removeButton = document.createElement("button"); 
+			removeButton.innerText = "✖";
+			removeButton.style.display = "inline-block";
+			removeButton.style.backgroundColor = "transparent";
+			removeButton.style.border = "none";
+			removeButton.style.outline = "none";
+			removeButton.className = "remove";
+			removeButton.id = item
+			removeButton.addEventListener('click', removeUseColumn)
+			
+			node.appendChild(label)   
+			node.appendChild(removeButton) 
+			list.appendChild(node)
+		  })
+		}
+
+		const dropAvailableColumns = (e) =>{
+			console.log("drop")
+			if(draggingAvailableColumns !== null)
+			{
+			  draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
+			  var index1 = availableColumnsData.indexOf(draggingAvailableColumns);
+			  var index2 = usedColumnsData.indexOf(draggedOverUsedColumns);
+			  
+			  if(index1 !== -1 && index2 !== -1)
+			  {
+				  if(usedColumnsData.includes(availableColumnsData[index1]) === false)
+					usedColumnsData.splice(index2, 0, draggingAvailableColumns)
+
+					renderUsedColumns(usedColumnsData)
+					draggingAvailableColumns = null;
+			  }
+			}
+			else if(draggingUsedColumns !== null && draggedOverUsedColumns !== null)
+			{
+			  draggingUsedColumns = draggingUsedColumns.replace("✖", "");
+			  draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
+			  var index1 = usedColumnsData.indexOf(draggingUsedColumns);
+			  var index2 = usedColumnsData.indexOf(draggedOverUsedColumns);
+			  
+			  if(index1 !== -1 && index2 !== -1)
+			  {
+				usedColumnsData.splice(index1, 1)
+				usedColumnsData.splice(index2, 0, draggingUsedColumns)
+
+				renderUsedColumns(usedColumnsData)
+				draggingUsedColumns = null;
+				draggedOverUsedColumns = null;
+			  }
+			}
+			
+			draggingAvailableColumns = null;
+			draggingUsedColumns = null;
+			draggedOverUsedColumns = null;
+		};
+
+		const removeUseColumn = (e) =>
+		{
+			if(usedColumnsData.length > 1)
+			{
+				var index1 = usedColumnsData.indexOf(e.target.id);
+				usedColumnsData.splice(index1, 1)
+				
+				renderUsedColumns(usedColumnsData)
+			}
+		}
+
+		const setDraggingAvailableColumn = (e) =>{
+		  draggingAvailableColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+		}
+
+		const setDraggingUsedeColumn = (e) =>{
+		  draggingUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+		}
+
+		const setDraggedOverUsedColumn = (e) => {
+ 		  e.preventDefault();
+ 		  draggedOverUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+		}
+
+	</script>
+	<body onload="document.getElementById('defaultTab').click();">
+	 <!-- Tab links -->
+
+		<div class="tab">
+		  <button id="defaultTab" class="tablinks" onclick="openTab(event, 'columns-tab')">Columns</button>
+		  <button class="tablinks" onclick="openTab(event, 'colors-tab')">Colors</button>
+		</div> 
+		
+		
+		<!-- Tab content: Colors -->
+		<div id="colors-tab" class="tabcontent">
+		  <h3>Work in progress</h3>
+		</div>
+		<!-- Tab content: Columns -->
+		<div id="columns-tab" class="tabcontent">
+		  <h3>Instructions</h3>
+		  <p>You can choose which column to display and in which order.</p>
+		  <ul>
+			  <li>Columns on the right side are those displayed in the overlay</li>
+			  <li>Add a column to be displayed by drag and drop a column from the left side to the right side</li>
+			  <li>Remove a column to be displayed by clicking the corresponding ✖ icon</li>
+			  <li>Change the order of the displayed columns by drag and drop within the right side</li>
+		  </ul>
+		  <Table>
+			<tr>
+				<th>Available columns</th>
+				<th>Used columns</th>
+			</tr>
+			<tr>
+				<td>
+					<ul class="tableList" id="availablecolumns-list"/>
+				</td>
+				<td>
+					<ul class="tableList" id="usedcolumns-list"/>
+				</td>
+			</tr>
+		</div>
+	 </body>
+</html>
