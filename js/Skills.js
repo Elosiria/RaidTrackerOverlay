@@ -1,3 +1,17 @@
+class Skill
+{
+	constructor(job, name, reference, cooldown, duration)
+	{
+		this.job = job;
+		this.name = name;
+		this.reference = reference;
+		this.cooldown = cooldown;
+		this.duration = duration;
+		this.lastUsage = null;
+		this.source = "images/Skills/" + job + "/" + name + ".png"
+	}
+}
+
 class Buffs
 {
 	constructor()
@@ -50,7 +64,7 @@ class Mitigations
 		this.skillsList.push(new Skill("Brd", "Troubadour", "1CED", 120, 15))
 		this.skillsList.push(new Skill("Dnc", "Shield Samba", "3E8C", 120, 15))
 		this.skillsList.push(new Skill("Dnc", "Improvisation", "3E8E", 120, 15))
-		this.skillsList.push(new Skill("Mch", "Tactician", "DF1", 120, 15))
+		this.skillsList.push(new Skill("Mch", "Tactician", "41F9", 120, 15))
 
 		//Magical range DPS
 		this.skillsList.push(new Skill("Rdm", "Addle", "1D88", 90, 10))

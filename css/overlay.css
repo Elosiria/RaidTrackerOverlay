@@ -1,0 +1,87 @@
+﻿ /*
+            表示設定 (1)
+        */
+
+* {
+    /* フォント （一部のフォントは上手く適用されない） */
+    font-family: "Arial";
+    font-size: 12px;
+}
+
+body, html {
+    margin: 0;
+}
+
+html {
+    height: 100%;
+
+    /* 外枠 */
+    /*border: 1px solid rgba(0,0,0,0.1);*/
+            
+    /* はみ出た内容はスクロールバーを表示させずに隠す
+        * 今のところ、ブラウザへの入力はできないので表示させても無意味 */
+    overflow: hidden;
+            
+    /* 背景色 */
+    background-color: rgba(0,0,0,0.5);
+}
+
+.resizeHandle {
+    /* リサイズ用のハンドル
+        * リサイズができる場所はウィンドウ右下の16x16ピクセルの場所
+        * この部分が完全に透明だとマウス入力が透過してしまってサイズを変更できなくなる */
+    background-image: url(handle.png);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+
+#combatantTable {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    /*background-color: rgba(0,0,0,0.5);*/
+}
+
+/* キャラクターデータのテキストの設定 */
+#combatantTableBody * {
+    color: #E2EBF5;
+    /*text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;*/
+    /*text-shadow: -1px 0 3px #000000, 0 1px 3px #000000, 1px 0 3px #000000, 0 -1px 3px #000000;*/
+    font-weight: 300;
+
+    /* はみ出たテキストを「…」で省略する */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* エンカウント情報とテーブルヘッダ内のテキストの設定 */
+#header,
+#combatantTableHeader  {
+    color: #DED7BE;
+    /*color: rgba(255,255,255,0.9);*/
+    background-color: rgba(0,0,0,0.7);
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 100;
+    white-space: nowrap;
+}
+
+#encounter,
+#settings
+{
+    display: inline-block;
+}
+
+/* テーブルヘッダの下線の設定 */
+#combatantTableHeader tr {
+    /*border-bottom: 1px solid #DED7BE;*/
+}
+
+
+/* テーブルヘッダの下線の設定 */
+#settings {
+    width: 12px;
+    height: 12px;
+    float: right;
+}

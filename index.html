@@ -1,90 +1,13 @@
 ﻿<html>
 <head>
     <meta charset="utf-8" />
-    <style>
-
-        /*
-            表示設定 (1)
-        */
-
-        * {
-            /* フォント （一部のフォントは上手く適用されない） */
-            font-family: "Arial";
-            font-size: 12px;
-        }
-
-        body, html {
-            margin: 0;
-        }
-
-        html {
-            height: 100%;
-
-            /* 外枠 */
-            /*border: 1px solid rgba(0,0,0,0.1);*/
-            
-            /* はみ出た内容はスクロールバーを表示させずに隠す
-             * 今のところ、ブラウザへの入力はできないので表示させても無意味 */
-            overflow: hidden;
-            
-            /* 背景色 */
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .resizeHandle {
-            /* リサイズ用のハンドル
-             * リサイズができる場所はウィンドウ右下の16x16ピクセルの場所
-             * この部分が完全に透明だとマウス入力が透過してしまってサイズを変更できなくなる */
-            background-image: url(handle.png);
-            background-position: bottom right;
-            background-repeat: no-repeat;
-            box-sizing: border-box;
-        }
-
-        #combatantTable {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-            /*background-color: rgba(0,0,0,0.5);*/
-        }
-
-        /* キャラクターデータのテキストの設定 */
-        #combatantTableBody * {
-            color: #E2EBF5;
-            /*text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;*/
-            /*text-shadow: -1px 0 3px #000000, 0 1px 3px #000000, 1px 0 3px #000000, 0 -1px 3px #000000;*/
-            font-weight: 300;
-
-            /* はみ出たテキストを「…」で省略する */
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        /* エンカウント情報とテーブルヘッダ内のテキストの設定 */
-        #encounter,
-        #combatantTableHeader  {
-            color: #DED7BE;
-            /*color: rgba(255,255,255,0.9);*/
-            background-color: rgba(0,0,0,0.7);
-            text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
-            font-weight: 100;
-            white-space: nowrap;
-        }
-
-        /* テーブルヘッダの下線の設定 */
-        #combatantTableHeader tr {
-            /*border-bottom: 1px solid #DED7BE;*/
-        }
-
-    </style>
     <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script> 
-    <script src="Libraries/Buffs.js"></script>
-    <script src="Libraries/Skill.js"></script>
-    <script src="Libraries/Player.js"></script> 
-    <script src="Libraries/PlayersManager.js"></script>
+    <link rel="stylesheet" href="css/overlay.css">
+    <script src="js/Skills.js"></script>
+    <script src="js/PlayersManager.js"></script>
+    <script src="js/Columns.js"></script>
     <script>
-
+    
         //
         // プラグイン側から以下のような ActXiv オブジェクトとしてデータが提供される
         //
@@ -114,7 +37,9 @@
         var useHTMLEncounterDefine = false;
 
         // ヘッダの定義
-        var headerDefine =
+        var headerDefine = [];
+
+        var defaultHeaderDefine =
         [
             //{ text: "#", width: "5%", align: "center" },
             { text: "", width: "5%", align: "center" },
@@ -127,7 +52,9 @@
         ];
 
         // 表示するデータの定義
-        var bodyDefine =
+        var bodyDefine = [];
+
+        var defaultTableContent =
         [
             //{ text: rankingText, width: "5%", align: "center", effect: deadYatsuEffect },
             { text: "{Job}", width: "5%", align: "center" },
@@ -139,6 +66,8 @@
             { text: "{deaths}", width: "10%", align: "center" },
             //{ text: "{StartTime}", width: "16%", align: "right" },
         ];
+        
+        var columnsInfos = new Columns();
 
         var gaugesDefine =
         {
@@ -256,13 +185,13 @@
 
         // 表示要素の更新
         function update(data) {
+            updateTableDefinition();
             updateEncounter(data);
-            if (document.getElementById("combatantTableHeader") == null) {
+            //if (document.getElementById("combatantTableHeader") == null) {
                 updateCombatantListHeader();
-            }
+            //}
             updateCombatantList(data);
         }
-
         // エンカウント情報を更新する
         function updateEncounter(data) {
             // 要素取得
@@ -339,6 +268,28 @@
 
             table.tHead = tableHeader;
         }
+
+        function updateTableDefinition()
+        {            
+		    if(localStorage.getItem("selectedColumns") !== null)
+            {
+                headerDefine.length = 0;
+                bodyDefine.length = 0;
+			    var selectedColumnsData = localStorage.getItem("selectedColumns").split(",");
+                for(var i = 0; i < selectedColumnsData.length; i++)
+                {
+                    var columnDetails = columnsInfos.getColumnByUserFriendlyName(selectedColumnsData[i])
+                    headerDefine.push({ text: columnDetails.headerName, width: columnDetails.width, align: columnDetails.align },)
+                    bodyDefine.push({ text: columnDetails.dataName, width: columnDetails.width, align: columnDetails.align },)
+                }
+            }
+            else
+            {
+                headerDefine = defaultHeaderDefine
+                bodyDefine = defaultTableContent
+            }
+        }
+
 
         // プレイヤーリストを更新する
         function updateCombatantList(data) {
@@ -449,7 +400,7 @@
                                 if(playerJob !== "")
                                 {
                                     var img = document.createElement("img"); 
-                                    img.src =  "Assets/Jobs/" + playerJob + ".png"; 
+                                    img.src =  "images/Jobs/" + playerJob + ".png"; 
                                     img.style.width = imageSize + "px";
                                     img.style.height = imageSize + "px";
                                     cell.appendChild(img);
@@ -550,9 +501,12 @@
     </script>
 </head>
 <body>
-    <div id="encounter">
-        No data to show.
-        <!-- ここにエンカウント情報が入る -->
+    <div id="header">
+        <div id="encounter">
+            No data to show.
+            <!-- ここにエンカウント情報が入る -->
+        </div>
+        <img id="settings" src="images/Menus/Settings.png" onclick='window.open("html/settings.html")'/>
     </div>
     <table id="combatantTable">
         <!-- ここにヘッダが入る -->
