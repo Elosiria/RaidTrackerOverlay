@@ -28,7 +28,7 @@
 
         //
         // 表示設定 (2)
-        //
+        //    
 
         // エンカウント情報の定義
         var encounterDefine = "{duration} {title} - DPS: {ENCDPS}";
@@ -280,7 +280,7 @@
                 {
                     var columnDetails = columnsInfos.getColumnByUserFriendlyName(selectedColumnsData[i])
                     headerDefine.push({ text: columnDetails.headerName, width: columnDetails.width, align: columnDetails.align },)
-                    bodyDefine.push({ text: columnDetails.dataName, width: columnDetails.width, align: columnDetails.align },)
+                    bodyDefine.push({ text: columnDetails.dataName, userFriendlyName: columnDetails.userFriendlyName, width: columnDetails.width, align: columnDetails.align },)
                 }
             }
             else
@@ -400,7 +400,10 @@
                                 if(playerJob !== "")
                                 {
                                     var img = document.createElement("img"); 
-                                    img.src =  "images/Jobs/" + playerJob + ".png"; 
+									if(bodyDefine[i].userFriendlyName === "Job without background")
+										img.src =  "images/Jobs/Simple/" + playerJob + ".png"; 
+									else
+										img.src =  "images/Jobs/Roles/" + playerJob + ".png"; 
                                     img.style.width = imageSize + "px";
                                     img.style.height = imageSize + "px";
                                     cell.appendChild(img);
@@ -500,17 +503,17 @@
         }
     </script>
 </head>
-<body>
-    <div id="header">
-        <div id="encounter">
-            No data to show.
-            <!-- ここにエンカウント情報が入る -->
-        </div>
-        <img id="settings" src="images/Menus/Settings.png" onclick='window.open("settings.html")'/>
-    </div>
-    <table id="combatantTable">
-        <!-- ここにヘッダが入る -->
-        <!-- ここに各キャラの情報が入る -->
-    </table>
-</body>
+	<body>
+		<div id="header">
+			<div id="encounter">
+				No data to show.
+				<!-- ここにエンカウント情報が入る -->
+			</div>
+			<img id="settings" src="images/Menus/Settings.png" onclick='window.open("settings.html")'/>
+		</div>
+		<table id="combatantTable">
+			<!-- ここにヘッダが入る -->
+			<!-- ここに各キャラの情報が入る -->
+		</table>
+	</body>
 </html>

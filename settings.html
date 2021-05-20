@@ -113,8 +113,8 @@ ul, p
 
 		//--------------------------------------------
 
-		var availableColumnsData = ['Job', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
-		var defaultUsedColumnsData = ['Job', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
+		var availableColumnsData = ['Job without background', 'Job with background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
+		var defaultUsedColumnsData = ['Job without background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
 		var usedColumnsData = [];
 		var draggingAvailableColumns;
 		var draggingUsedColumns, draggedOverUsedColumns;
@@ -231,7 +231,14 @@ ul, p
  		  e.preventDefault();
  		  draggedOverUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
 		}
-
+		
+		
+		function OnBackgroundSelected()
+		{
+			//console.log("onchange");
+			//console.log(document.getElementById('backgroundimage').innerText)
+		};
+		
 	</script>
 	<body onload="document.getElementById('defaultTab').click();">
 	 <!-- Tab links -->
@@ -248,6 +255,9 @@ ul, p
 		</div>
 		<!-- Tab content: Columns -->
 		<div id="columns-tab" class="tabcontent">
+			<h3>Background image</h3>
+			<label for="myfile">Select a file:<br/></label>
+			<input type="file" id="fileSelector" accept="image/*" onchange="OnBackgroundSelected">
 		  <h3>Instructions</h3>
 		  <p>You can choose which column to display and in which order.</p>
 		  <ul>

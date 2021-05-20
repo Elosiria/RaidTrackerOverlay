@@ -15,7 +15,8 @@ class Columns
 	constructor()
 	{
 		this.columnsList = [];
-		this.columnsList.push(new ColumnDefinition("Job", "", "{Job}", "5%", "center"));
+		this.columnsList.push(new ColumnDefinition("Job with background", "", "{Job}", "5%", "center"));
+		this.columnsList.push(new ColumnDefinition("Job without background", "", "{Job}", "5%", "center"));
 		this.columnsList.push(new ColumnDefinition("Player Name", "Name", "{name}", "25%", "left"));
 		this.columnsList.push(new ColumnDefinition("Raidwide offensive skills", "Offensive", "{Buffs}", "14%", "left"));
 		this.columnsList.push(new ColumnDefinition("Raidwide defensive skills", "Defensive", "{Mitigations}", "14%", "left"));
