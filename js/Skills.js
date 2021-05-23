@@ -11,7 +11,6 @@ class Skill
 		this.source = "images/Skills/" + job + "/" + name + ".png"
 	}
 }
-
 class Buffs
 {
 	constructor()

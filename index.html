@@ -96,7 +96,8 @@
             Blm: "rgb(165, 121, 214)",
             Sch: "rgb(134, 87, 255)",
             Whm: "rgb(255, 240, 220)",
-            Ast: "rgb(255, 231, 74)"
+            Ast: "rgb(255, 231, 74)",
+            Blu: "rgb(36, 89, 255)"
         };
 
         // 順位を表示する（text に関数を指定する例）
@@ -336,11 +337,11 @@
                                 cellText = null;
                                 var player = playerManager.getPlayerByName(combatantName);
 
-                                var playerJob = parseActFormat("{Job}", combatant)
+                                var playerJob = parseActFormat("{Job}", combatant);
                                 var list = player.buffs;
                                 if(bodyDefine[i].text === "{Mitigations}")
                                     list = player.mitigations;
-
+									
                                 for(j = 0; j < list.skillsList.length; j++)
 		                        {
                                     if(list.skillsList[j].job === playerJob)
@@ -396,14 +397,22 @@
                             else if(bodyDefine[i].text === "{Job}")
                             {
                                 cellText = null;
+                                var player = playerManager.getPlayerByName(combatantName);
                                 var playerJob = parseActFormat("{Job}", combatant)
                                 if(playerJob !== "")
                                 {
                                     var img = document.createElement("img"); 
 									if(bodyDefine[i].userFriendlyName === "Job without background")
+									{ 
 										img.src =  "images/Jobs/Simple/" + playerJob + ".png"; 
+									}
 									else
-										img.src =  "images/Jobs/Roles/" + playerJob + ".png"; 
+									{
+										if(playerJob === "Blu")
+											img.src =  "images/Jobs/Roles/" + playerJob + " - " + player.bluType + ".png"; 
+										else
+											img.src =  "images/Jobs/Roles/" + playerJob + ".png"; 
+									}
                                     img.style.width = imageSize + "px";
                                     img.style.height = imageSize + "px";
                                     cell.appendChild(img);

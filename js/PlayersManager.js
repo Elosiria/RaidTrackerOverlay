@@ -49,6 +49,33 @@ class PlayersManager
 		//If this is not a skill or a not a skill to be tracked we exit the function
 		if(isValidSkill === false)
 		{
+			var skillRef = logData[2];
+			var skillName = logData[3];
+			var playerName = logData[6];
+			
+			var playerFound = false;
+			for(var i = 0; i < this.playerList.length; i++)
+			{
+				if(playerName === this.playerList[i].name)
+				{
+					if(skillName === "Aetherial Mimicry: Tank" && skillRef === "84c")
+					{
+						this.playerList[i].bluType = "Tank";
+						//console.log("Aetherial Mimicry: Tank");
+					}
+					else if(skillName === "Aetherial Mimicry: Dps" && skillRef === "84d")
+					{
+						this.playerList[i].bluType = "Dps";
+						//console.log("Aetherial Mimicry: Dps");
+					}
+					else if(skillName === "Aetherial Mimicry: Healer" && skillRef === "84e")
+					{
+						this.playerList[i].bluType = "Healer";
+						//console.log("Aetherial Mimicry: Healer");
+					}
+				}
+			}
+			
 			return;
 		}
 
@@ -105,7 +132,7 @@ class PlayersManager
 
 	reset()
 	{
-		while(this.playerList.length > 0)
+		while(this.playerList.length > 24)
 		{
 			this.playerList.pop();
 		}
@@ -119,6 +146,7 @@ class Player
 		this.name = name;
 		this.buffs = new Buffs()
 		this.mitigations = new Mitigations()
+		this.bluType = "Dps"
 	}
 	
 	useSkill(skillName)
