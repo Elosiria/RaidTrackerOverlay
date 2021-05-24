@@ -32,7 +32,7 @@
 
         // エンカウント情報の定義
         //var encounterDefine = "{duration} {title} - DPS: {ENCDPS}";
-        var encounterDefine = "{duration} - {title}";
+        var encounterDefine = "{duration} - {CurrentZoneName}";
 
         // 上記のエンカウント情報を HTML として扱うなら true
         var useHTMLEncounterDefine = false;
@@ -535,6 +535,13 @@
                         var tag = str.slice(openBraceIndex + 1, closeBraceIndex);
                         if (typeof dictionary[tag] !== 'undefined') {
                             result += dictionary[tag];
+							
+						//For debug purposes
+						/*for (var key in dictionary){
+							//key will be -> 'id'
+							//dictionary[key] -> 'value'
+							console.log(key + " => " + dictionary[key])
+						}*/
                         } else {
                             console.log("parseActFormat: Unknown tag: " + tag);
                             result += "ERROR";
