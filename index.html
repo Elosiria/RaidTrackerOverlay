@@ -197,7 +197,22 @@
         // エンカウント情報を更新する
         function updateEncounter(data) {
             // 要素取得
+			//If the user chooses a background image
             var encounterElem = document.getElementById('encounter');
+			if(localStorage.getItem("UseFooterInstead") === "true")
+			{
+				document.getElementById('combatantTable').after(document.getElementById('header'));
+				document.getElementById('header').className = "footer";  
+				document.getElementById('settings').style = "float:left";  
+
+			}
+			else
+			{
+				document.getElementById('combatantTable').before(document.getElementById('header'));
+				document.getElementById('header').className = "header";  
+				document.getElementById('settings').style = "float:right";  
+			}
+			
             //console.log("updateEncounter: " + parseActFormat("{encid}", data.Encounter));
             /*for (var key in data.Encounter) 
             {
@@ -304,6 +319,15 @@
 			else
 			{
 				document.body.style = "background: none";
+			}
+			
+			if(localStorage.getItem("UseThinHeader") === "true")
+			{
+				document.getElementById("header").style = "font-size:12px;padding:0px"
+			}
+			else
+			{
+				document.getElementById("header").style = "font-size:15px;padding:5px"
 			}
 		
             // 要素取得＆作成

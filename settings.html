@@ -242,6 +242,14 @@ ul, p
 			localStorage.setItem("BackgroundImageUrl", document.getElementById('BackgroundImageUrl').value);
 		}
 		
+		function UseThinHeaderCheckbox(e) {
+			localStorage.setItem("UseThinHeader", document.getElementById('UseThinHeader').checked);
+		}
+		
+		function UseFooterInsteadCheckbox(e) {
+			localStorage.setItem("UseFooterInstead", document.getElementById('UseFooterInstead').checked);
+		}
+		
 	</script>
 	<body onload="document.getElementById('defaultTab').click();">
 	 <!-- Tab links -->
@@ -258,13 +266,24 @@ ul, p
 		</div>
 		<!-- Tab content: Columns -->
 		<div id="columns-tab" class="tabcontent">
-			<h3>Background image</h3>
+			<h3>Settings</h3>
 			<label class="switch">
 			  <input type="checkbox" id="UseBackgroundImage" onclick="UseBackgroundImageCheckbox()">
 			  <span class="slider round">Use a background image</span>
 			  <br/>
 			  <label STYLE="padding:0 0 0 25px;" for="myfile">Image link:</label>
 			  <input id="BackgroundImageUrl">
+			  <br/>
+			</label>
+			<label class="switch">
+			  <input type="checkbox" id="UseThinHeader" onclick="UseThinHeaderCheckbox()">
+			  <span class="slider round">Use a thinner header</span>
+			  <br/>
+			</label>
+			<label class="switch">
+			  <input type="checkbox" id="UseFooterInstead" onclick="UseFooterInsteadCheckbox()">
+			  <span class="slider round">Use a the footer instead of the header</span>
+			  <br/>
 			</label>
 		  <h3>Instructions</h3>
 		  <p>You can choose which column to display and in which order.</p>
@@ -299,4 +318,6 @@ function updateValue(e)
 }
 document.getElementById('UseBackgroundImage').checked = localStorage.getItem("UseBackgroundImage");
 document.getElementById('BackgroundImageUrl').value = localStorage.getItem("BackgroundImageUrl");
+document.getElementById('UseThinHeader').checked = localStorage.getItem("UseThinHeader");
+document.getElementById('UseFooterInstead').checked = localStorage.getItem("'UseFooterInstead'");
 </script>
