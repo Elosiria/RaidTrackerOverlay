@@ -462,8 +462,8 @@
                             else if(bodyDefine[i].text === "{encdps}")
                             {
                                 var playerDPS = Math.floor(parseActFormat("{encdps}", combatant));
-                                //cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-                                cell.innerText = playerDPS;
+                                cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                //cell.innerText = playerDPS;
                             }
                             else
                             {
