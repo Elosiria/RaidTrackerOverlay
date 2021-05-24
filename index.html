@@ -294,6 +294,17 @@
 
         // プレイヤーリストを更新する
         function updateCombatantList(data) {
+			
+			//If the user chooses a background image
+			if(localStorage.getItem("UseBackgroundImage") === "true")
+			{
+				document.body.style = "background: URL('" + localStorage.getItem("BackgroundImageUrl") + "');background-size: cover; ";
+			}
+			else
+			{
+				document.body.style = "background: none";
+			}
+		
             // 要素取得＆作成
             var table = document.getElementById('combatantTable');
             var oldTableBody = table.tBodies.namedItem('combatantTableBody');

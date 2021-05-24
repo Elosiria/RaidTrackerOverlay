@@ -5,6 +5,7 @@
 body
 {
   background-color: #1c1c1c;
+	color: #E2EBF5;
 }
 
 h3 
@@ -110,6 +111,7 @@ ul, p
 			renderUsedColumns(usedColumnsData);
 			}
 		}
+		
 
 		//--------------------------------------------
 
@@ -232,12 +234,13 @@ ul, p
  		  draggedOverUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
 		}
 		
-		
-		function OnBackgroundSelected()
-		{
-			//console.log("onchange");
-			//console.log(document.getElementById('backgroundimage').innerText)
-		};
+		function UseBackgroundImageCheckbox(e) {
+			//console.log("Checkbox - UseBackgroundImage");
+			//console.log(document.getElementById('UseBackgroundImage').checked);
+			localStorage.setItem("UseBackgroundImage", document.getElementById('UseBackgroundImage').checked);
+			//console.log(document.getElementById('BackgroundImageUrl').value);
+			localStorage.setItem("BackgroundImageUrl", document.getElementById('BackgroundImageUrl').value);
+		}
 		
 	</script>
 	<body onload="document.getElementById('defaultTab').click();">
@@ -256,8 +259,13 @@ ul, p
 		<!-- Tab content: Columns -->
 		<div id="columns-tab" class="tabcontent">
 			<h3>Background image</h3>
-			<label for="myfile">Select a file:<br/></label>
-			<input type="file" id="fileSelector" accept="image/*" onchange="OnBackgroundSelected">
+			<label class="switch">
+			  <input type="checkbox" id="UseBackgroundImage" onclick="UseBackgroundImageCheckbox()">
+			  <span class="slider round">Use a background image</span>
+			  <br/>
+			  <label STYLE="padding:0 0 0 25px;" for="myfile">Image link:</label>
+			  <input id="BackgroundImageUrl">
+			</label>
 		  <h3>Instructions</h3>
 		  <p>You can choose which column to display and in which order.</p>
 		  <ul>
@@ -282,3 +290,13 @@ ul, p
 		</div>
 	 </body>
 </html>
+<script>
+input = document.getElementById('BackgroundImageUrl');
+input.addEventListener('change', updateValue);
+function updateValue(e) 
+{
+	localStorage.setItem("BackgroundImageUrl", document.getElementById('BackgroundImageUrl').value);
+}
+document.getElementById('UseBackgroundImage').checked = localStorage.getItem("UseBackgroundImage");
+document.getElementById('BackgroundImageUrl').value = localStorage.getItem("BackgroundImageUrl");
+</script>
