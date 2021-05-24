@@ -4,8 +4,8 @@
 
 * {
     /* フォント （一部のフォントは上手く適用されない） */
-    font-family: "Arial";
-    font-size: 12px;
+    font-family: "Helvetica";
+    /*font-size: 12px;*/
 }
 
 body, html {
@@ -24,6 +24,7 @@ html {
             
     /* 背景色 */
     background-color: rgba(0,0,0,0.5);
+	border-style: none;
 }
 
 .resizeHandle {
@@ -54,17 +55,30 @@ html {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+	font-size: 12px;
 }
 
 /* エンカウント情報とテーブルヘッダ内のテキストの設定 */
-#header,
-#combatantTableHeader  {
-    color: #DED7BE;
+#Header  {
+    color: #FFFFFF;
     /*color: rgba(255,255,255,0.9);*/
     background-color: rgba(0,0,0,0.7);
-    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
-    font-weight: 100;
+    /*text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;*/
+    font-size:15px;
+	padding: 5px;
+    text-align: justify;
+    text-align-last: center;
+	vertical-align: middle;
+}
+
+#combatantTableHeader  {
+    color: #FFFFFF;
+    /*color: rgba(255,255,255,0.9);*/
+    background-color: rgba(0,0,0,0.4);
+    /*text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;*/
+    font-weight: 1;
     white-space: nowrap;
+	font-size: 12px;
 }
 
 #encounter,
