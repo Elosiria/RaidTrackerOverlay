@@ -197,6 +197,7 @@
         // エンカウント情報を更新する
         function updateEncounter(data) {
             // 要素取得
+			
 			//If the user chooses a background image
             var encounterElem = document.getElementById('encounter');
 			if(localStorage.getItem("UseFooterInstead") === "true")
@@ -319,6 +320,10 @@
 			else
 			{
 				document.body.style = "background: none";
+			}
+			if(localStorage.getItem("OverlayScaling") !== "")
+			{
+				document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
 			}
 			
 			if(localStorage.getItem("UseThinHeader") === "true")

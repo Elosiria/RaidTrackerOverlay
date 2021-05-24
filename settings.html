@@ -283,6 +283,10 @@ ul, p
 			<label class="switch">
 			  <input type="checkbox" id="UseFooterInstead" onclick="UseFooterInsteadCheckbox()">
 			  <span class="slider round">Use a the footer instead of the header</span>
+			  <br
+			<label class="switch">
+			  <label>Rescale (Default value is 1):</label>
+			  <input id="OverlayScaling">
 			  <br/>
 			</label>
 		  <h3>Instructions</h3>
@@ -320,4 +324,11 @@ document.getElementById('UseBackgroundImage').checked = localStorage.getItem("Us
 document.getElementById('BackgroundImageUrl').value = localStorage.getItem("BackgroundImageUrl");
 document.getElementById('UseThinHeader').checked = localStorage.getItem("UseThinHeader");
 document.getElementById('UseFooterInstead').checked = localStorage.getItem("'UseFooterInstead'");
+document.getElementById('OverlayScaling').value = localStorage.getItem("'OverlayScaling'");
+input = document.getElementById('OverlayScaling');
+input.addEventListener('change', updateScalingValue);
+function updateScalingValue(e) 
+{
+	localStorage.setItem("OverlayScaling", document.getElementById('OverlayScaling').value);
+}
 </script>
