@@ -1,13 +1,13 @@
 ﻿<html>
 <head>
     <meta charset="utf-8" />
-    <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script> 
+    <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
     <link rel="stylesheet" href="css/overlay.css">
     <script src="js/Skills.js"></script>
     <script src="js/PlayersManager.js"></script>
     <script src="js/Columns.js"></script>
     <script>
-    
+
         //
         // プラグイン側から以下のような ActXiv オブジェクトとしてデータが提供される
         //
@@ -21,14 +21,14 @@
         // };
         //
         // データの更新は 1 秒毎。
-        // 
+        //
         // プラグインから onOverlayDataUpdate イベントが発行されるので、それを受信することもできる
         // イベントハンドラの第一引数の detail プロパティ内に上記のオブジェクトが入る
         //
 
         //
         // 表示設定 (2)
-        //    
+        //
 
         // エンカウント情報の定義
         //var encounterDefine = "{duration} {title} - DPS: {ENCDPS}";
@@ -41,33 +41,33 @@
         var headerDefine = [];
 
         var defaultHeaderDefine =
-        [
-            //{ text: "#", width: "5%", align: "center" },
-            { text: "", width: "5%", align: "center" },
-            { text: "Name", width: "25%", align: "left" },
-            { text: "Offensive", width: "14%", align: "left" },
-            { text: "Defensive", width: "14%", align: "left" },
-            { text: "%", width: "10%", align: "center" },
-            { text: "DPS", width: "16%", align: "center" },
-            { text: "Deaths", width: "10%", align: "center" },
-        ];
+            [
+                //{ text: "#", width: "5%", align: "center" },
+                { text: "", width: "5%", align: "center" },
+                { text: "Name", width: "25%", align: "left" },
+                { text: "Offensive", width: "14%", align: "left" },
+                { text: "Defensive", width: "14%", align: "left" },
+                { text: "%", width: "10%", align: "center" },
+                { text: "DPS", width: "16%", align: "center" },
+                { text: "Deaths", width: "10%", align: "center" },
+            ];
 
         // 表示するデータの定義
         var bodyDefine = [];
 
         var defaultTableContent =
-        [
-            //{ text: rankingText, width: "5%", align: "center", effect: deadYatsuEffect },
-            { text: "{Job}", width: "5%", align: "center" },
-            { text: "{name}", width: "25%", align: "left" },
-            { text: "{Buffs}", width: "14%", align: "left" },
-            { text: "{Mitigations}", width: "14%", align: "left" },
-            { text: "{damage%}", width: "10%", align: "center" },
-            { text: "{encdps}", width: "16%", align: "center" },
-            { text: "{deaths}", width: "10%", align: "center" },
-            //{ text: "{StartTime}", width: "16%", align: "right" },
-        ];
-        
+            [
+                //{ text: rankingText, width: "5%", align: "center", effect: deadYatsuEffect },
+                { text: "{Job}", width: "5%", align: "center" },
+                { text: "{name}", width: "25%", align: "left" },
+                { text: "{Buffs}", width: "14%", align: "left" },
+                { text: "{Mitigations}", width: "14%", align: "left" },
+                { text: "{damage%}", width: "10%", align: "center" },
+                { text: "{encdps}", width: "16%", align: "center" },
+                { text: "{deaths}", width: "10%", align: "center" },
+                //{ text: "{StartTime}", width: "16%", align: "right" },
+            ];
+
         var columnsInfos = new Columns();
 
         var gaugesDefine =
@@ -88,8 +88,8 @@
             Nin: "rgb(175, 25, 100)",
             Drg: "rgb(65, 100, 205)",
             Mnk: "rgb(214, 156, 0)",
-			Sam: "rgb(228, 109, 4)",
-			Rpr: "rgb(150, 90, 144)",
+            Sam: "rgb(228, 109, 4)",
+            Rpr: "rgb(150, 90, 144)",
             Brd: "rgb(145, 186, 94)",
             Dnc: "rgb(226, 176, 175)",
             Mch: "rgb(110, 225, 214)",
@@ -98,8 +98,8 @@
             Blm: "rgb(165, 121, 214)",
             Sch: "rgb(134, 87, 255)",
             Whm: "rgb(255, 240, 220)",
-			Ast: "rgb(255, 231, 74)",
-			Sge: "rgb(128, 160, 240)",
+            Ast: "rgb(255, 231, 74)",
+            Sge: "rgb(128, 160, 240)",
             Blu: "rgb(36, 89, 255)"
         };
 
@@ -107,14 +107,14 @@
         // 引数:
         //  combatant : キャラクターのデータ。combatant["..."]でデータを取得できる。
         //  index : キャラクターの並び順。一番上は 0 で、その後は 1 ずつ増える。
-        // 戻り値: 
+        // 戻り値:
         //  表示するテキスト。
         //  ACT のタグは展開されないので、展開したい場合は parseActFormat 関数を使用してください。
         function rankingText(combatant, index) {
             // 1 から始まる番号を返す
             return (index + 1).toString();
         }
-        
+
         // 死亡奴を赤くする（effect の例）
         // 引数:
         //  cell : セルの DOM 要素
@@ -135,9 +135,9 @@
         //
         // 以下表示用スクリプト
         //
-       var used = false;
-       var playerManager = new PlayersManager();
-	   addOverlayListener("LogLine", function (e){
+        var used = false;
+        var playerManager = new PlayersManager();
+        addOverlayListener("LogLine", function (e) {
             //var res = e.line.split(",");
             playerManager.update(e.line);
             /*if(e.line.includes("Elyre Kayato") && e.line.includes("Fountain"))
@@ -153,12 +153,11 @@
             //    displayResizeHandle();
             //} else {
             //    hideResizeHandle();
-			//}
+            //}
             document.documentElement.onresize = null;
         });
 
-        addOverlayListener("ChangePrimaryPlayer", function (e) 
-        {
+        addOverlayListener("ChangePrimaryPlayer", function (e) {
             playerManager.playerCharacter = e.charName;
         });
 
@@ -192,44 +191,41 @@
             updateTableDefinition();
             updateEncounter(data);
             //if (document.getElementById("combatantTableHeader") == null) {
-                updateCombatantListHeader();
+            updateCombatantListHeader();
             //}
             updateCombatantList(data);
         }
         // エンカウント情報を更新する
         function updateEncounter(data) {
             // 要素取得
-			
-			//If the user chooses a background image
-            var encounterElem = document.getElementById('encounter');
-			if(localStorage.getItem("UseFooterInstead") === "true")
-			{
-				document.getElementById('combatantTable').after(document.getElementById('header'));
-				document.getElementById('header').className = "footer";  
-				document.getElementById('settings').style = "float:left";  
 
-			}
-			else
-			{
-				document.getElementById('combatantTable').before(document.getElementById('header'));
-				document.getElementById('header').className = "header";  
-				document.getElementById('settings').style = "float:right";  
-			}
-			
+            //If the user chooses a background image
+            var encounterElem = document.getElementById('encounter');
+            if (localStorage.getItem("UseFooterInstead") === "true") {
+                document.getElementById('combatantTable').after(document.getElementById('header'));
+                document.getElementById('header').className = "footer";
+                document.getElementById('settings').style = "float:left";
+
+            }
+            else {
+                document.getElementById('combatantTable').before(document.getElementById('header'));
+                document.getElementById('header').className = "header";
+                document.getElementById('settings').style = "float:right";
+            }
+
             //console.log("updateEncounter: " + parseActFormat("{encid}", data.Encounter));
-            /*for (var key in data.Encounter) 
+            /*for (var key in data.Encounter)
             {
                 // check if the property/key is defined in the object itself, not in parent
                 if (data.Encounter.hasOwnProperty(key))
-                {           
+                {
                     console.log(key, data.Encounter[key]);
                 }
             }
             console.log(" ");*/
             //console.log(data.Encounter.name);
 
-            if(data.isActive === "false")
-            {
+            if (data.isActive === "false") {
                 playerManager.reset();
             }
 
@@ -289,22 +285,18 @@
             table.tHead = tableHeader;
         }
 
-        function updateTableDefinition()
-        {            
-		    if(localStorage.getItem("selectedColumns") !== null)
-            {
+        function updateTableDefinition() {
+            if (localStorage.getItem("selectedColumns") !== null) {
                 headerDefine.length = 0;
                 bodyDefine.length = 0;
-			    var selectedColumnsData = localStorage.getItem("selectedColumns").split(",");
-                for(var i = 0; i < selectedColumnsData.length; i++)
-                {
+                var selectedColumnsData = localStorage.getItem("selectedColumns").split(",");
+                for (var i = 0; i < selectedColumnsData.length; i++) {
                     var columnDetails = columnsInfos.getColumnByUserFriendlyName(selectedColumnsData[i])
                     headerDefine.push({ text: columnDetails.headerName, width: columnDetails.width, align: columnDetails.align },)
                     bodyDefine.push({ text: columnDetails.dataName, userFriendlyName: columnDetails.userFriendlyName, width: columnDetails.width, align: columnDetails.align },)
                 }
             }
-            else
-            {
+            else {
                 headerDefine = defaultHeaderDefine
                 bodyDefine = defaultTableContent
             }
@@ -313,27 +305,22 @@
 
         // プレイヤーリストを更新する
         function updateCombatantList(data) {
-			//If the user chooses a background image
-			if(localStorage.getItem("UseBackgroundImage") === "true")
-			{
-				document.body.style = "background: URL('" + localStorage.getItem("BackgroundImageUrl") + "');background-size: cover; ";
-			}
-			else
-			{
-				document.body.style = "background: none";
-			}
-			if(localStorage.getItem("OverlayScaling") !== "")
-			{
-				document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
-			}
-			
-			if(localStorage.getItem("UseThinHeader") === "true")
-			{
-				document.getElementById("header").style = "font-size:12px;padding:0px"
-			}
-			else
-			{
-				document.getElementById("header").style = "font-size:15px;padding:5px"
+            //If the user chooses a background image
+            if (localStorage.getItem("UseBackgroundImage") === "true") {
+                document.body.style = "background: URL('" + localStorage.getItem("BackgroundImageUrl") + "');background-size: cover; ";
+            }
+            else {
+                document.body.style = "background: none";
+            }
+            if (localStorage.getItem("OverlayScaling") !== "") {
+                document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
+            }
+
+            if (localStorage.getItem("UseThinHeader") === "true") {
+                document.getElementById("header").style = "font-size:12px;padding:0px"
+            }
+            else {
+                document.getElementById("header").style = "font-size:15px;padding:5px"
             }
 
             // 要素取得＆作成
@@ -355,17 +342,16 @@
             for (var combatantName in data.Combatant) {
                 var combatant = data.Combatant[combatantName];
                 var tableRow = newTableBody.insertRow(newTableBody.rows.length);
-                if(topDPS === -1)
+                if (topDPS === -1)
                     topDPS = parseActFormat("{encdps}", combatant)
-                
+
                 var rowHeight = 20;
                 var imageSize = 18;
                 tableRow.style.height = rowHeight + "px";
-                tableRow.style.transform =  "translateY(1px)";
+                tableRow.style.transform = "translateY(1px)";
                 //tableRow.style.top =  "50%";
-                
-                for (var i = 0; i < bodyDefine.length && i < maxCombatants; i++)
-                {
+
+                for (var i = 0; i < bodyDefine.length && i < maxCombatants; i++) {
                     var cell = tableRow.insertCell(i);
                     // テキスト設定
                     if (typeof bodyDefine[i].text !== 'undefined') {
@@ -373,22 +359,19 @@
                         if (typeof bodyDefine[i].text === 'function') {
                             cellText = bodyDefine[i].text(combatant, combatantIndex);
                         } else {
-                            if(bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}" )
-                            {
+                            if (bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}") {
                                 cellText = null;
                                 var player = playerManager.getPlayerByName(combatantName);
 
                                 var playerJob = parseActFormat("{Job}", combatant);
                                 var list = player.buffs;
-                                if(bodyDefine[i].text === "{Mitigations}")
+                                if (bodyDefine[i].text === "{Mitigations}")
                                     list = player.mitigations;
-									
-                                for(j = 0; j < list.skillsList.length; j++)
-		                        {
-                                    if(list.skillsList[j].job === playerJob)
-                                    {
-                                        var img = document.createElement("img"); 
-                                        img.src =  list.skillsList[j].source; 
+
+                                for (j = 0; j < list.skillsList.length; j++) {
+                                    if (list.skillsList[j].job === playerJob) {
+                                        var img = document.createElement("img");
+                                        img.src = list.skillsList[j].source;
                                         img.style.width = imageSize + "px";
                                         img.style.height = imageSize + "px";
                                         //img.style.display = "inline-block";
@@ -398,36 +381,33 @@
                                         skillStatus = skillStatus + "";
                                         skillStatus = skillStatus.split(";")
 
-                                        if(skillStatus[0] === "Active")
-                                        {
+                                        if (skillStatus[0] === "Active") {
                                             //img.style.border = "1px solid rgb(255, 204, 0)"
                                             cell.appendChild(img);
                                         }
-                                        else if(skillStatus[0] === "On Cooldown")
-                                        {
+                                        else if (skillStatus[0] === "On Cooldown") {
                                             img.style.filter = "grayscale(100%)";
                                             img.style.opacity = "0.5";
-                                                
-                                            var container = document.createElement("div"); 
+
+                                            var container = document.createElement("div");
                                             container.style.display = "inline-block";
                                             container.style.position = "relative";
                                             container.style.textAlign = "center";
                                             container.style.width = imageSize + "px";
                                             container.style.height = imageSize + "px";
 
-                                            var div = document.createElement("div"); 
-                                            div.innerText =  skillStatus[1];
-                                            div.style.position =  "absolute";
-                                            div.style.top =  "50%";
-                                            div.style.left =  "50%";
-                                            div.style.transform =  "translate(-50%, -50%)";
-                                                
+                                            var div = document.createElement("div");
+                                            div.innerText = skillStatus[1];
+                                            div.style.position = "absolute";
+                                            div.style.top = "50%";
+                                            div.style.left = "50%";
+                                            div.style.transform = "translate(-50%, -50%)";
+
                                             container.appendChild(img);
                                             container.appendChild(div);
                                             cell.appendChild(container);
                                         }
-                                        else if(skillStatus[0] === "Off Cooldown")
-                                        {
+                                        else if (skillStatus[0] === "Off Cooldown") {
                                             img.style.filter = "grayscale(100%)";
                                             cell.appendChild(img);
                                         }
@@ -435,38 +415,32 @@
                                     }
                                 }
                             }
-                            else if(bodyDefine[i].text === "{Job}")
-                            {
+                            else if (bodyDefine[i].text === "{Job}") {
                                 cellText = null;
                                 var player = playerManager.getPlayerByName(combatantName);
                                 var playerJob = parseActFormat("{Job}", combatant)
-                                if(playerJob !== "")
-                                {
-                                    var img = document.createElement("img"); 
-									if(bodyDefine[i].userFriendlyName === "Job without background")
-									{ 
-										img.src =  "images/Jobs/Simple/" + playerJob + ".png"; 
-									}
-									else
-									{
-										if(playerJob === "Blu")
-											img.src =  "images/Jobs/Roles/" + playerJob + " - " + player.bluType + ".png"; 
-										else
-											img.src =  "images/Jobs/Roles/" + playerJob + ".png"; 
-									}
+                                if (playerJob !== "") {
+                                    var img = document.createElement("img");
+                                    if (bodyDefine[i].userFriendlyName === "Job without background") {
+                                        img.src = "images/Jobs/Simple/" + playerJob + ".png";
+                                    }
+                                    else {
+                                        if (playerJob === "Blu")
+                                            img.src = "images/Jobs/Roles/" + playerJob + " - " + player.bluType + ".png";
+                                        else
+                                            img.src = "images/Jobs/Roles/" + playerJob + ".png";
+                                    }
                                     img.style.width = imageSize + "px";
                                     img.style.height = imageSize + "px";
                                     cell.appendChild(img);
                                 }
                             }
-                            else if(bodyDefine[i].text === "{encdps}")
-                            {
+                            else if (bodyDefine[i].text === "{encdps}") {
                                 var playerDPS = Math.floor(parseActFormat("{encdps}", combatant));
                                 cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 //cell.innerText = playerDPS;
                             }
-                            else
-                            {
+                            else {
                                 cell.innerText = parseActFormat(bodyDefine[i].text, combatant);
                             }
                         }
@@ -474,7 +448,7 @@
                         var cellHTML;
                         if (typeof bodyDefine[i].html === 'function') {
                             cellHTML = bodyDefine[i].html(combatant, combatantIndex);
-                        } 
+                        }
                         else {
                             cellHTML = parseActFormat(bodyDefine[i].html, combatant);
                         }
@@ -484,7 +458,7 @@
                     cell.style.width = bodyDefine[i].width;
                     cell.style.maxWidth = bodyDefine[i].width;
                     // 行構え設定
-                    if (typeof(bodyDefine[i].align) !== 'undefined') {
+                    if (typeof (bodyDefine[i].align) !== 'undefined') {
                         cell.style.textAlign = bodyDefine[i].align;
                     }
                     // エフェクト実行
@@ -493,22 +467,21 @@
                     }
                 }
                 combatantIndex++;
-                
+
                 currentDPS = parseActFormat("{encdps}", combatant)
                 currentJob = parseActFormat("{Job}", combatant)
                 var gauge = newTableBody.insertRow(newTableBody.rows.length);
-                gauge.style.width = Math.floor(currentDPS/topDPS * 100) + "%";
+                gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
                 gauge.style.height = "2px";
                 gauge.style.position = "absolute";
-                if(playerJob !== "")
+                if (playerJob !== "")
                     gauge.style.background = gaugesDefine[currentJob];
                 else
                     gauge.style.background = "rgb(255,255,255)";
             }
 
             // tbody が既に存在していたら置換、そうでないならテーブルに追加
-            if (oldTableBody != void(0)) 
-            {   
+            if (oldTableBody != void (0)) {
                 table.replaceChild(newTableBody, oldTableBody);
             }
             else {
@@ -517,8 +490,7 @@
         }
 
         // Miniparse フォーマット文字列を解析し、表示文字列を取得する
-        function parseActFormat(str, dictionary)
-        {
+        function parseActFormat(str, dictionary) {
             var result = "";
 
             var currentIndex = 0;
@@ -540,13 +512,13 @@
                         var tag = str.slice(openBraceIndex + 1, closeBraceIndex);
                         if (typeof dictionary[tag] !== 'undefined') {
                             result += dictionary[tag];
-							
-						//For debug purposes
-						/*for (var key in dictionary){
-							//key will be -> 'id'
-							//dictionary[key] -> 'value'
-							console.log(key + " => " + dictionary[key])
-						}*/
+
+                            //For debug purposes
+                            /*for (var key in dictionary){
+                                //key will be -> 'id'
+                                //dictionary[key] -> 'value'
+                                console.log(key + " => " + dictionary[key])
+                            }*/
                         } else {
                             console.log("parseActFormat: Unknown tag: " + tag);
                             result += "ERROR";
@@ -555,7 +527,7 @@
                     }
                 }
             } while (currentIndex < str.length);
-            
+
             return result;
         }
     </script>
