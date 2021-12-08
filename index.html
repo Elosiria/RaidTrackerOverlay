@@ -88,7 +88,8 @@
             Nin: "rgb(175, 25, 100)",
             Drg: "rgb(65, 100, 205)",
             Mnk: "rgb(214, 156, 0)",
-            Sam: "rgb(228, 109, 4)",
+			Sam: "rgb(228, 109, 4)",
+			Rpr: "rgb(150, 90, 144)",
             Brd: "rgb(145, 186, 94)",
             Dnc: "rgb(226, 176, 175)",
             Mch: "rgb(110, 225, 214)",
@@ -97,7 +98,8 @@
             Blm: "rgb(165, 121, 214)",
             Sch: "rgb(134, 87, 255)",
             Whm: "rgb(255, 240, 220)",
-            Ast: "rgb(255, 231, 74)",
+			Ast: "rgb(255, 231, 74)",
+			Sge: "rgb(128, 160, 240)",
             Blu: "rgb(36, 89, 255)"
         };
 
@@ -147,11 +149,12 @@
 
         // onOverlayStateUpdate イベントを購読
         document.addEventListener("onOverlayStateUpdate", function (e) {
-            if (!e.detail.isLocked) {
-                displayResizeHandle();
-            } else {
-                hideResizeHandle();
-            }
+            //if (!e.detail.isLocked) {
+            //    displayResizeHandle();
+            //} else {
+            //    hideResizeHandle();
+			//}
+            document.documentElement.onresize = null;
         });
 
         addOverlayListener("ChangePrimaryPlayer", function (e) 
@@ -173,10 +176,9 @@
         });*/
 
 
-        function displayResizeHandle() {
-            document.documentElement.classList.add("resizeHandle");
-        }
-
+        //function displayResizeHandle() {
+        //    document.documentElement.classList.add("resizeHandle");
+        //}
         function hideResizeHandle() {
             document.documentElement.classList.remove("resizeHandle");
         }
@@ -311,7 +313,6 @@
 
         // プレイヤーリストを更新する
         function updateCombatantList(data) {
-			
 			//If the user chooses a background image
 			if(localStorage.getItem("UseBackgroundImage") === "true")
 			{
@@ -333,8 +334,8 @@
 			else
 			{
 				document.getElementById("header").style = "font-size:15px;padding:5px"
-			}
-		
+            }
+
             // 要素取得＆作成
             var table = document.getElementById('combatantTable');
             var oldTableBody = table.tBodies.namedItem('combatantTableBody');
@@ -344,12 +345,12 @@
             // tbody の内容を作成
             var topDPS = -1;
             var combatantIndex = 0;
-
             var headergauge = newTableBody.insertRow(newTableBody.rows.length);
             headergauge.style.width = "100%";
             headergauge.style.height = "2px";
             headergauge.style.position = "absolute";
             headergauge.style.background = "rgba(0,0,0,0.7)";
+            var maxCombatants = 8;
 
             for (var combatantName in data.Combatant) {
                 var combatant = data.Combatant[combatantName];
@@ -363,9 +364,8 @@
                 tableRow.style.transform =  "translateY(1px)";
                 //tableRow.style.top =  "50%";
                 
-                for (var i = 0; i < bodyDefine.length; i++)
+                for (var i = 0; i < bodyDefine.length && i < maxCombatants; i++)
                 {
-
                     var cell = tableRow.insertCell(i);
                     // テキスト設定
                     if (typeof bodyDefine[i].text !== 'undefined') {

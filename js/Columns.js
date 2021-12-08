@@ -18,8 +18,8 @@ class Columns
 		this.columnsList.push(new ColumnDefinition("Job with background", "", "{Job}", "5%", "center"));
 		this.columnsList.push(new ColumnDefinition("Job without background", "", "{Job}", "5%", "center"));
 		this.columnsList.push(new ColumnDefinition("Player Name", "Name", "{name}", "25%", "left"));
-		this.columnsList.push(new ColumnDefinition("Raidwide offensive skills", "Offensive", "{Buffs}", "14%", "left"));
-		this.columnsList.push(new ColumnDefinition("Raidwide defensive skills", "Defensive", "{Mitigations}", "14%", "left"));
+		this.columnsList.push(new ColumnDefinition("Raidwide offensive skills", "Attack", "{Buffs}", "14%", "left"));
+		this.columnsList.push(new ColumnDefinition("Raidwide defensive skills", "Defense", "{Mitigations}", "14%", "left"));
 		this.columnsList.push(new ColumnDefinition("Percentage DPS", "%", "{damage%}", "10%", "center"));
 		this.columnsList.push(new ColumnDefinition("Current DPS", "DPS", "{encdps}", "16%", "center"));
 		this.columnsList.push(new ColumnDefinition("Deaths", "Deaths", "{deaths}", "10%", "center"));
