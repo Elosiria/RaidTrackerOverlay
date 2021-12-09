@@ -7,7 +7,8 @@
     <script src="js/PlayersManager.js"></script>
     <script src="js/Columns.js"></script>
     <script>
-
+		if (localStorage.getItem("OverlayScaling") == null || localStorage.getItem("OverlayScaling") == 0)
+            localStorage.getItem("OverlayScaling") = 1;
         //
         // プラグイン側から以下のような ActXiv オブジェクトとしてデータが提供される
         //
@@ -258,10 +259,11 @@
             var table = document.getElementById('combatantTable');
             var tableHeader = document.createElement("thead");
             tableHeader.id = "combatantTableHeader";
-            var headerRow = tableHeader.insertRow();
+			var headerRow = tableHeader.insertRow();
+			headerRow.style.fontSize = 12 * localStorage.getItem("OverlayScaling") + "px";
 
             for (var i = 0; i < headerDefine.length; i++) {
-                var cell = document.createElement("th");
+				var cell = document.createElement("th");
                 // テキスト設定
                 if (typeof headerDefine[i].text !== 'undefined') {
                     cell.innerText = headerDefine[i].text;
@@ -313,14 +315,14 @@
                 document.body.style = "background: none";
             }
             if (localStorage.getItem("OverlayScaling") !== "") {
-                document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
+               // document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
             }
 
             if (localStorage.getItem("UseThinHeader") === "true") {
-                document.getElementById("header").style = "font-size:12px;padding:0px"
+				document.getElementById("header").style = "font-size:" + 12 * localStorage.getItem("OverlayScaling") + "px;padding:0px"
             }
             else {
-                document.getElementById("header").style = "font-size:15px;padding:5px"
+				document.getElementById("header").style = "font-size:" + 15 * localStorage.getItem("OverlayScaling") + "px;padding:5px"
             }
 
             // 要素取得＆作成
@@ -338,20 +340,26 @@
             headergauge.style.position = "absolute";
             headergauge.style.background = "rgba(0,0,0,0.7)";
             var maxCombatants = 8;
+            var currentCombatant = 0;
 
             for (var combatantName in data.Combatant) {
+                currentCombatant++;
+
+                if(currentCombatant > maxCombatants)
+                    break;
+
                 var combatant = data.Combatant[combatantName];
                 var tableRow = newTableBody.insertRow(newTableBody.rows.length);
                 if (topDPS === -1)
                     topDPS = parseActFormat("{encdps}", combatant)
 
-                var rowHeight = 20;
-                var imageSize = 18;
+				var rowHeight = 20 * localStorage.getItem("OverlayScaling");
+				var imageSize = 18 * localStorage.getItem("OverlayScaling");
                 tableRow.style.height = rowHeight + "px";
                 tableRow.style.transform = "translateY(1px)";
                 //tableRow.style.top =  "50%";
 
-                for (var i = 0; i < bodyDefine.length && i < maxCombatants; i++) {
+                for (var i = 0; i < bodyDefine.length; i++) {
                     var cell = tableRow.insertCell(i);
                     // テキスト設定
                     if (typeof bodyDefine[i].text !== 'undefined') {
@@ -409,6 +417,7 @@
                                         }
                                         else if (skillStatus[0] === "Off Cooldown") {
                                             img.style.filter = "grayscale(100%)";
+                                            img.style.opacity = "0.3";
                                             cell.appendChild(img);
                                         }
 
@@ -457,6 +466,7 @@
                     // 幅設定
                     cell.style.width = bodyDefine[i].width;
                     cell.style.maxWidth = bodyDefine[i].width;
+					cell.style.fontSize = 12 * localStorage.getItem("OverlayScaling") + "px"
                     // 行構え設定
                     if (typeof (bodyDefine[i].align) !== 'undefined') {
                         cell.style.textAlign = bodyDefine[i].align;
@@ -472,7 +482,7 @@
                 currentJob = parseActFormat("{Job}", combatant)
                 var gauge = newTableBody.insertRow(newTableBody.rows.length);
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
-                gauge.style.height = "2px";
+				gauge.style.height = 2 * localStorage.getItem("OverlayScaling") + "px";
                 gauge.style.position = "absolute";
                 if (playerJob !== "")
                     gauge.style.background = gaugesDefine[currentJob];
