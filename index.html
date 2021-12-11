@@ -205,13 +205,13 @@
             if (localStorage.getItem("UseFooterInstead") === "true") {
                 document.getElementById('combatantTable').after(document.getElementById('header'));
                 document.getElementById('header').className = "footer";
-                document.getElementById('settings').style = "float:left";
+                //document.getElementById('settings').style = "float:left";
 
             }
             else {
                 document.getElementById('combatantTable').before(document.getElementById('header'));
                 document.getElementById('header').className = "header";
-                document.getElementById('settings').style = "float:right";
+                //document.getElementById('settings').style = "float:right";
             }
 
             //console.log("updateEncounter: " + parseActFormat("{encid}", data.Encounter));
@@ -466,7 +466,7 @@
                     // 幅設定
                     cell.style.width = bodyDefine[i].width;
                     cell.style.maxWidth = bodyDefine[i].width;
-					cell.style.fontSize = 12 * localStorage.getItem("OverlayScaling") + "px"
+                    cell.style.fontSize = 12 * localStorage.getItem("OverlayScaling") + "px";
                     // 行構え設定
                     if (typeof (bodyDefine[i].align) !== 'undefined') {
                         cell.style.textAlign = bodyDefine[i].align;
@@ -543,12 +543,12 @@
     </script>
 </head>
 	<body>
-		<div id="header">
+		<div id="header" onclick='window.open("settings.html")'>
 			<div id="encounter">
 				No data to show.
 				<!-- ここにエンカウント情報が入る -->
 			</div>
-			<img id="settings" src="images/Menus/Settings.png" onclick='window.open("settings.html")'/>
+			<!-- <img id="settings" src="images/Menus/Settings.png" /> -->
 		</div>
 		<table id="combatantTable">
 			<!-- ここにヘッダが入る -->
