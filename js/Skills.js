@@ -48,7 +48,7 @@ class Mitigations
 		//Tanks
 		this.skillsList.push(new Skill("Pld", "Reprisal", 22, "1D6F", 60, 10))
 		this.skillsList.push(new Skill("Pld", "Divine Veil", 56, "DD4", 90, 30))
-		this.skillsList.push(new Skill("Pld", "Passage Of Arms", 70, "1CD9", 120, 18))
+		this.skillsList.push(new Skill("Pld", "Passage of Arms", 70, "1CD9", 120, 18))
 		this.skillsList.push(new Skill("War", "Reprisal", 22, "1D6F", 60, 10))
 		this.skillsList.push(new Skill("War", "Shake It Off", 68, "1CDC", 90, 15))
 		this.skillsList.push(new Skill("Drk", "Reprisal", 22, "1D6F", 60, 10))
