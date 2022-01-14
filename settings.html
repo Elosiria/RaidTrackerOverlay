@@ -1,160 +1,50 @@
 ﻿<html>
-	<head>
-	</head>
-	<style>
-body
-{
-  background-color: #1c1c1c;
-	color: #E2EBF5;
-}
+<head>
+	<link rel="stylesheet" href="css/settings.css">
+	<script src="js/Skills.js"></script>
+	<script src="js/StoredUserSettings.js"></script>
+</head>
+<script>
+	let userSettings = new StoredUserSettings();
+	//--------------------------------------------
+	var usedColumnsData = [];
+	var draggingAvailableColumns;
+	var draggingUsedColumns, draggedOverUsedColumns;
 
-h3 
-{
-	color: #DED7BE;
-	text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
-}
-
-table, tr, td, th
-{
-	color: #DED7BE;
-	background-color: #272727;
-	text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
-	border: 1px solid #FFFFFF;
-	border-collapse:collapse;
-	/*background-color: rgba(0,0,0,0.8);*/
-}
-
-ul, p
-{
-	color: #E2EBF5;
-	text-shadow: none;
-}
-
-.tableList
-{
-	display:table-cell;
-}
-
-.remove {
-	color: #DED7BE;
-	text-shadow: -1px 0 2px #961f17, 0 1px 2px #961f17, 1px 0 2px #961f17, 0 -1px 2px #961f17;
-	/*background-color: rgba(0,0,0,0.8);*/
-}
-	/* Style the tab */
-.tab {
-  overflow: hidden;
-  border-style: none none outset none;
- /* background-color: #f1f1f1;*/
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
-  color: #DED7BE;
-  text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-/*.tab button:hover {
-  background-color: #ddd;
-}*/
-
-/* Create an active/current tablink class */
-.tab button.active {
-  /*background-color: #ccc;*/
-  background-color: #474747;
-}
-
-/* Style the tab content */
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border-top: none;
-}
-	</style>
-	<script>
-	function openTab(evt, tabName) {
-	  // Declare all variables
-	  var i, tabcontent, tablinks;
-
-
-	  // Get all elements with class="tabcontent" and hide them
-	  tabcontent = document.getElementsByClassName("tabcontent");
-	  for (i = 0; i < tabcontent.length; i++) {
-		tabcontent[i].style.display = "none";
-	  }
-
-	  // Get all elements with class="tablinks" and remove the class "active"
-	  tablinks = document.getElementsByClassName("tablinks");
-	  for (i = 0; i < tablinks.length; i++) {
-		tablinks[i].className = tablinks[i].className.replace(" active", "");
-	  }
-
-	  // Show the current tab, and add an "active" class to the button that opened the tab
-	  document.getElementById(tabName).style.display = "block";
-	  evt.currentTarget.className += " active";
-
-		  if(tabName ===  "columns-tab")
-		  {
-			renderAvailableColumns(availableColumnsData);
-			if(localStorage.getItem("selectedColumns") !== null)
-				usedColumnsData = localStorage.getItem("selectedColumns").split(",");
-			else
-				usedColumnsData = defaultUsedColumnsData;
-
-			renderUsedColumns(usedColumnsData);
-			}
-		}
-		
-
-		//--------------------------------------------
-
-		var availableColumnsData = ['Job without background', 'Job with background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
-		var defaultUsedColumnsData = ['Job without background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
-		var usedColumnsData = [];
-		var draggingAvailableColumns;
-		var draggingUsedColumns, draggedOverUsedColumns;
-
-		const renderAvailableColumns = (data) =>{
-		  var list = document.getElementById('availablecolumns-list')
-		  list.innerText = ''
-		  data.forEach(item=>{
-			var node = document.createElement("li");    
+	const renderAvailableColumns = (data) => {
+		var list = document.getElementById('availablecolumns-list')
+		list.innerText = ''
+		data.forEach(item => {
+			var node = document.createElement("li");
 			node.draggable = true
 			//node.style.backgroundColor = item
-			//node.style.backgroundColor = node.style.backgroundColor.length > 0  
+			//node.style.backgroundColor = node.style.backgroundColor.length > 0
 			//? item : 'lightblue'
-			node.addEventListener('drag', setDraggingAvailableColumn) 
+			node.addEventListener('drag', setDraggingAvailableColumn)
 			node.innerText = item
 			list.appendChild(node)
-		  })
-		}
+		})
+	}
 
-		const renderUsedColumns = (data) =>{
-		  localStorage.setItem("selectedColumns", data);
-		  var list = document.getElementById('usedcolumns-list')
-		  list.innerText = ''
-		  data.forEach(item=>{
-			var node = document.createElement("li");    
+	const renderUsedColumns = (data) => {
+		localStorage.setItem("selectedColumns", data);
+		var list = document.getElementById('usedcolumns-list')
+		list.innerText = ''
+		data.forEach(item => {
+			var node = document.createElement("li");
 			node.draggable = true
 			//node.style.backgroundColor = item
-			//node.style.backgroundColor = node.style.backgroundColor.length > 0  
+			//node.style.backgroundColor = node.style.backgroundColor.length > 0
 			//? item : 'lightblue'
-			node.addEventListener('drag', setDraggingUsedeColumn) 
+			node.addEventListener('drag', setDraggingUsedeColumn)
 			node.addEventListener('dragover', setDraggedOverUsedColumn)
-			node.addEventListener('drop', dropAvailableColumns) 
-			
-			var label = document.createElement("label"); 
+			node.addEventListener('drop', dropAvailableColumns)
+
+			var label = document.createElement("label");
 			label.style.display = "inline-block";
 			label.innerText = item
 
-			var removeButton = document.createElement("button"); 
+			var removeButton = document.createElement("button");
 			removeButton.innerText = "✖";
 			removeButton.style.display = "inline-block";
 			removeButton.style.backgroundColor = "transparent";
@@ -163,173 +53,312 @@ ul, p
 			removeButton.className = "remove";
 			removeButton.id = item
 			removeButton.addEventListener('click', removeUseColumn)
-			
-			node.appendChild(label)   
-			node.appendChild(removeButton) 
+
+			node.appendChild(label)
+			node.appendChild(removeButton)
 			list.appendChild(node)
-		  })
-		}
+		})
+	}
 
-		const dropAvailableColumns = (e) =>{
-			console.log("drop")
-			if(draggingAvailableColumns !== null)
-			{
-			  draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
-			  var index1 = availableColumnsData.indexOf(draggingAvailableColumns);
-			  var index2 = usedColumnsData.indexOf(draggedOverUsedColumns);
-			  
-			  if(index1 !== -1 && index2 !== -1)
-			  {
-				  if(usedColumnsData.includes(availableColumnsData[index1]) === false)
-					usedColumnsData.splice(index2, 0, draggingAvailableColumns)
+	const dropAvailableColumns = (e) => {
+		console.log("drop")
+		if (draggingAvailableColumns !== null) {
+			draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
+			var index1 = userSettings.AvailableColumnsData.indexOf(draggingAvailableColumns);
+			var index2 = userSettings.UsedColumnsData.indexOf(draggedOverUsedColumns);
 
-					renderUsedColumns(usedColumnsData)
-					draggingAvailableColumns = null;
-			  }
+			if (index1 !== -1 && index2 !== -1) {
+				if (userSettings.UsedColumnsData.includes(userSettings.AvailableColumnsData[index1]) === false)
+					userSettings.UsedColumnsData.splice(index2, 0, draggingAvailableColumns)
+
+				renderUsedColumns(userSettings.UsedColumnsData)
+				draggingAvailableColumns = null;
 			}
-			else if(draggingUsedColumns !== null && draggedOverUsedColumns !== null)
-			{
-			  draggingUsedColumns = draggingUsedColumns.replace("✖", "");
-			  draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
-			  var index1 = usedColumnsData.indexOf(draggingUsedColumns);
-			  var index2 = usedColumnsData.indexOf(draggedOverUsedColumns);
-			  
-			  if(index1 !== -1 && index2 !== -1)
-			  {
-				usedColumnsData.splice(index1, 1)
-				usedColumnsData.splice(index2, 0, draggingUsedColumns)
+		}
+		else if (draggingUsedColumns !== null && draggedOverUsedColumns !== null) {
+			draggingUsedColumns = draggingUsedColumns.replace("✖", "");
+			draggedOverUsedColumns = draggedOverUsedColumns.replace("✖", "");
+			var index1 = userSettings.UsedColumnsData.indexOf(draggingUsedColumns);
+			var index2 = userSettings.UsedColumnsData.indexOf(draggedOverUsedColumns);
 
-				renderUsedColumns(usedColumnsData)
+			if (index1 !== -1 && index2 !== -1) {
+				userSettings.UsedColumnsData.splice(index1, 1)
+				userSettings.UsedColumnsData.splice(index2, 0, draggingUsedColumns)
+
+				renderUsedColumns(userSettings.UsedColumnsData)
 				draggingUsedColumns = null;
 				draggedOverUsedColumns = null;
-			  }
-			}
-			
-			draggingAvailableColumns = null;
-			draggingUsedColumns = null;
-			draggedOverUsedColumns = null;
-		};
-
-		const removeUseColumn = (e) =>
-		{
-			if(usedColumnsData.length > 1)
-			{
-				var index1 = usedColumnsData.indexOf(e.target.id);
-				usedColumnsData.splice(index1, 1)
-				
-				renderUsedColumns(usedColumnsData)
 			}
 		}
 
-		const setDraggingAvailableColumn = (e) =>{
-		  draggingAvailableColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
-		}
+		draggingAvailableColumns = null;
+		draggingUsedColumns = null;
+		draggedOverUsedColumns = null;
+	};
 
-		const setDraggingUsedeColumn = (e) =>{
-		  draggingUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
-		}
+	const removeUseColumn = (e) => {
+		if (userSettings.UsedColumnsData.length > 1) {
+			var index1 = userSettings.UsedColumnsData.indexOf(e.target.id);
+			userSettings.UsedColumnsData.splice(index1, 1)
 
-		const setDraggedOverUsedColumn = (e) => {
- 		  e.preventDefault();
- 		  draggedOverUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+			renderUsedColumns(userSettings.UsedColumnsData)
 		}
-		
-		function UseBackgroundImageCheckbox(e) {
-			//console.log("Checkbox - UseBackgroundImage");
-			//console.log(document.getElementById('UseBackgroundImage').checked);
-			localStorage.setItem("UseBackgroundImage", document.getElementById('UseBackgroundImage').checked);
-			//console.log(document.getElementById('BackgroundImageUrl').value);
-			localStorage.setItem("BackgroundImageUrl", document.getElementById('BackgroundImageUrl').value);
-		}
-		
-		function UseThinHeaderCheckbox(e) {
-			localStorage.setItem("UseThinHeader", document.getElementById('UseThinHeader').checked);
-		}
-		
-		function UseFooterInsteadCheckbox(e) {
-			localStorage.setItem("UseFooterInstead", document.getElementById('UseFooterInstead').checked);
-		}
-		
-	</script>
-	<body onload="document.getElementById('defaultTab').click();">
-	 <!-- Tab links -->
+	}
 
-		<div class="tab">
-		  <button id="defaultTab" class="tablinks" onclick="openTab(event, 'columns-tab')">Columns</button>
-		  <button class="tablinks" onclick="openTab(event, 'colors-tab')">Colors</button>
-		</div> 
-		
-		
-		<!-- Tab content: Colors -->
-		<div id="colors-tab" class="tabcontent">
-		  <h3>Work in progress</h3>
-		</div>
-		<!-- Tab content: Columns -->
-		<div id="columns-tab" class="tabcontent">
-			<h3>Settings</h3>
-			<label class="switch">
-			  <input type="checkbox" id="UseBackgroundImage" onclick="UseBackgroundImageCheckbox()">
-			  <span class="slider round">Use a background image</span>
-			  <br/>
-			  <label STYLE="padding:0 0 0 25px;" for="myfile">Image link:</label>
-			  <input id="BackgroundImageUrl">
-			  <br/>
-			</label>
-			<label class="switch">
-			  <input type="checkbox" id="UseThinHeader" onclick="UseThinHeaderCheckbox()">
-			  <span class="slider round">Use a thinner header</span>
-			  <br/>
-			</label>
-			<label class="switch">
-			  <input type="checkbox" id="UseFooterInstead" onclick="UseFooterInsteadCheckbox()">
-			  <span class="slider round">Use a the footer instead of the header</span>
-			  <br
-			<label class="switch">
-			  <label>Rescale (Default value is 1):</label>
-			  <input id="OverlayScaling">
-			  <br/>
-			</label>
-			<label STYLE="padding:0 0 0 25px;" for="myfile">Image link:</label>
-		  <h3>Instructions</h3>
-		  <p>You can choose which column to display and in which order.</p>
-		  <ul>
-			  <li>Columns on the right side are those displayed in the overlay</li>
-			  <li>Add a column to be displayed by drag and drop a column from the left side to the right side</li>
-			  <li>Remove a column to be displayed by clicking the corresponding ✖ icon</li>
-			  <li>Change the order of the displayed columns by drag and drop within the right side</li>
-		  </ul>
-		  <Table>
-			<tr>
-				<th>Available columns</th>
-				<th>Used columns</th>
-			</tr>
-			<tr>
-				<td>
-					<ul class="tableList" id="availablecolumns-list"/>
-				</td>
-				<td>
-					<ul class="tableList" id="usedcolumns-list"/>
-				</td>
-			</tr>
-		</div>
-	 </body>
+	const setDraggingAvailableColumn = (e) => {
+		draggingAvailableColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+	}
+
+	const setDraggingUsedeColumn = (e) => {
+		draggingUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+	}
+
+	const setDraggedOverUsedColumn = (e) => {
+		e.preventDefault();
+		draggedOverUsedColumns = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
+	}
+
+	function UseBackgroundImageCheckbox(e) {
+		userSettings.UseBackgroundImage = document.getElementById('UseBackgroundImage').checked;
+		userSettings.BackgroundImageUrl = document.getElementById('BackgroundImageUrl').value;
+		userSettings.Save();
+	}
+
+	function OnInputBackgroundImageUrl(e) {
+		userSettings.BackgroundImageUrl = document.getElementById('BackgroundImageUrl').value;
+		userSettings.Save();
+	}
+
+	function UseThinHeaderCheckbox(e) {
+		userSettings.UseThinnerHeader = document.getElementById('UseThinHeader').checked;
+		userSettings.Save();
+	}
+
+	function UseFooterInsteadCheckbox(e) {
+		userSettings.UseFooterInsteadOfHeader = document.getElementById('UseFooterInstead').checked;
+		userSettings.Save();
+	}
+
+	function OnInputRescale(e) {
+		userSettings.Rescale = document.getElementById('OverlayScaling').value;
+		userSettings.Save();
+	}
+
+</script>
+<body>
+	<h3>Settings</h3>
+	<label class="switch">
+		<input type="checkbox" id="UseBackgroundImage" onclick="UseBackgroundImageCheckbox()">
+		<span class="slider round">Use a background image</span>
+		<br />
+		<label STYLE="padding:0 0 0 25px;" for="myfile">Image link:</label>
+		<input id="BackgroundImageUrl" oninput="OnInputBackgroundImageUrl()">
+		<br />
+	</label>
+	<label class="switch">
+		<input type="checkbox" id="UseThinHeader" onclick="UseThinHeaderCheckbox()">
+		<span class="slider round">Use a thinner header</span>
+		<br />
+	</label>
+	<label class="switch">
+		<input type="checkbox" id="UseFooterInstead" onclick="UseFooterInsteadCheckbox()">
+		<span class="slider round">Use a the footer instead of the header</span>
+		<br />
+	</label>
+	<label class="switch">
+		<label>Rescale (Default value is 1):</label>
+		<input id="OverlayScaling" oninput="OnInputRescale()">
+		<br />
+	</label>
+	<h3>Columns to display</h3>
+	<p>You can choose which column to display and in which order.</p>
+	<ul>
+		<li>Columns on the right side are those displayed in the overlay</li>
+		<li>Add a column to be displayed by drag and drop a column from the left side to the right side</li>
+		<li>Remove a column to be displayed by clicking the corresponding ✖ icon</li>
+		<li>Change the order of the displayed columns by drag and drop within the right side</li>
+	</ul>
+	<Table>
+		<tr>
+			<th>Available columns</th>
+			<th>Displayed columns</th>
+		</tr>
+		<tr>
+			<td>
+				<ul class="tableList" id="availablecolumns-list" />
+			</td>
+			<td>
+				<ul class="tableList" id="usedcolumns-list" />
+			</td>
+		</tr>
+	</Table>
+
+	<h3>Skills tracked</h3>
+	<button type="button" class="collapsible" job="Pld"><img src="images/Jobs/Roles/Pld.png" width="30" style="vertical-align:middle;padding-right:10" />Paladin</button>
+	<div class="content" id="Pld-Content"></div>
+	<button type="button" class="collapsible" job="War"><img src="images/Jobs/Roles/War.png" width="30" style="vertical-align:middle;padding-right:10" />Warrior</button>
+	<div class="content" id="War-Content"></div>
+	<button type="button" class="collapsible" job="Drk"><img src="images/Jobs/Roles/Drk.png" width="30" style="vertical-align:middle;padding-right:10" />Dark Knight</button>
+	<div class="content" id="Drk-Content"></div>
+	<button type="button" class="collapsible" job="Gnb"><img src="images/Jobs/Roles/Gnb.png" width="30" style="vertical-align:middle;padding-right:10" />Gunbreaker</button>
+	<div class="content" id="Gnb-Content"></div>
+	<button type="button" class="collapsible" job="Whm"><img src="images/Jobs/Roles/Whm.png" width="30" style="vertical-align:middle;padding-right:10" />White Mage</button>
+	<div class="content" id="Whm-Content"></div>
+	<button type="button" class="collapsible" job="Sch"><img src="images/Jobs/Roles/Sch.png" width="30" style="vertical-align:middle;padding-right:10" />Scholar</button>
+	<div class="content" id="Sch-Content"></div>
+	<button type="button" class="collapsible" job="Ast"><img src="images/Jobs/Roles/Ast.png" width="30" style="vertical-align:middle;padding-right:10" />Astrologian</button>
+	<div class="content" id="Ast-Content"></div>
+	<button type="button" class="collapsible" job="Sge"><img src="images/Jobs/Roles/Sge.png" width="30" style="vertical-align:middle;padding-right:10" />Sage</button>
+	<div class="content" id="Sge-Content"></div>
+	<button type="button" class="collapsible" job="Mnk"><img src="images/Jobs/Roles/Mnk.png" width="30" style="vertical-align:middle;padding-right:10" />Monk</button>
+	<div class="content" id="Mnk-Content"></div>
+	<button type="button" class="collapsible" job="Drg"><img src="images/Jobs/Roles/Drg.png" width="30" style="vertical-align:middle;padding-right:10" />Dragoon</button>
+	<div class="content" id="Drg-Content"></div>
+	<button type="button" class="collapsible" job="Nin"><img src="images/Jobs/Roles/Nin.png" width="30" style="vertical-align:middle;padding-right:10" />Ninja</button>
+	<div class="content" id="Nin-Content"></div>
+	<button type="button" class="collapsible" job="Sam"><img src="images/Jobs/Roles/Sam.png" width="30" style="vertical-align:middle;padding-right:10" />Samurai</button>
+	<div class="content" id="Sam-Content"></div>
+	<button type="button" class="collapsible" job="Rpr"><img src="images/Jobs/Roles/Rpr.png" width="30" style="vertical-align:middle;padding-right:10" />Reaper</button>
+	<div class="content" id="Rpr-Content"></div>
+	<button type="button" class="collapsible" job="Brd"><img src="images/Jobs/Roles/Brd.png" width="30" style="vertical-align:middle;padding-right:10" />Bard</button>
+	<div class="content" id="Brd-Content"></div>
+	<button type="button" class="collapsible" job="Mch"><img src="images/Jobs/Roles/Mch.png" width="30" style="vertical-align:middle;padding-right:10" />Machinist</button>
+	<div class="content" id="Mch-Content"></div>
+	<button type="button" class="collapsible" job="Dnc"><img src="images/Jobs/Roles/Dnc.png" width="30" style="vertical-align:middle;padding-right:10" />Dancer</button>
+	<div class="content" id="Dnc-Content"></div>
+	<button type="button" class="collapsible" job="Blm"><img src="images/Jobs/Roles/Blm.png" width="30" style="vertical-align:middle;padding-right:10" />Black Mage</button>
+	<div class="content" id="Blm-Content"></div>
+	<button type="button" class="collapsible" job="Smn"><img src="images/Jobs/Roles/Smn.png" width="30" style="vertical-align:middle;padding-right:10" />Summoner</button>
+	<div class="content" id="Smn-Content"></div>
+	<button type="button" class="collapsible" job="Rdm"><img src="images/Jobs/Roles/Rdm.png" width="30" style="vertical-align:middle;padding-right:10" />Red Mage</button>
+	<div class="content" id="Rdm-Content"></div>
+</body>
 </html>
 <script>
-input = document.getElementById('BackgroundImageUrl');
-input.addEventListener('change', updateValue);
-function updateValue(e) 
-{
-	localStorage.setItem("BackgroundImageUrl", document.getElementById('BackgroundImageUrl').value);
-}
-document.getElementById('UseBackgroundImage').checked = localStorage.getItem("UseBackgroundImage");
-document.getElementById('BackgroundImageUrl').value = localStorage.getItem("BackgroundImageUrl");
-document.getElementById('UseThinHeader').checked = localStorage.getItem("UseThinHeader");
-document.getElementById('UseFooterInstead').checked = localStorage.getItem("'UseFooterInstead'");
-document.getElementById('OverlayScaling').value = localStorage.getItem("'OverlayScaling'");
-input = document.getElementById('OverlayScaling');
-input.addEventListener('change', updateScalingValue);
-function updateScalingValue(e) 
-{
-	localStorage.setItem("OverlayScaling", document.getElementById('OverlayScaling').value);
-}
+	//Restoring options from save state
+	document.getElementById('UseBackgroundImage').checked = userSettings.UseBackgroundImage;
+	document.getElementById('BackgroundImageUrl').value = userSettings.BackgroundImageUrl;
+	document.getElementById('UseThinHeader').checked = userSettings.UseThinnerHeader;
+	document.getElementById('UseFooterInstead').checked = userSettings.UseFooterInsteadOfHeader;
+	document.getElementById('OverlayScaling').value = userSettings.Rescale;
+
+	renderAvailableColumns(userSettings.AvailableColumnsData);
+	renderUsedColumns(userSettings.UsedColumnsData);
+
+	//Debug
+	//console.log("UseBackgroundImage: " + userSettings.UseBackgroundImage);
+	//console.log("BackgroundImageUrl: " + userSettings.BackgroundImageUrl);
+	//console.log("UseThinnerHeader: " + userSettings.UseThinnerHeader);
+	//console.log("UseFooterInsteadOfHeader: " + userSettings.UseFooterInsteadOfHeader);
+	//console.log("Rescale: " + userSettings.Rescale);
+
+	//Collapsible menus
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
+
+	//Adding listeners to collapse menus
+	for (i = 0; i < coll.length; i++) {
+		coll[i].addEventListener("click", function () {
+			this.classList.toggle("active");
+			var content = this.nextElementSibling;
+			if (content.style.maxHeight) {
+				content.style.maxHeight = null;
+			} else {
+				content.style.maxHeight = content.scrollHeight + "px";
+			}
+		});
+	}
+
+	//Adding content to collapse menus
+	var buffs = new Buffs();
+	var mitigation = new Mitigations();
+	for (i = 0; i < coll.length; i++) {
+		//var content = this.nextElementSibling;
+		var job = coll[i].getAttribute("job");
+
+		var buffsadded = false;
+		//Parsing buffs
+		for (j = 0; j < buffs.skillsList.length; j++) {
+			//console.log(buffs.skillsList[j].job + " " + buffs.skillsList[j].name);
+			if (buffs.skillsList[j].job === job) {
+				if (document.getElementById(job + "-Content").getElementsByClassName("Buffs")) {
+					if (buffsadded == false) {
+						var sectionTitle = document.createElement("h4");
+						sectionTitle.className = "Buffs";
+						sectionTitle.innerText = "Raidwide Offensive Skills"
+						document.getElementById(job + "-Content").appendChild(sectionTitle);
+						buffsadded = true;
+					}
+					//console.log("buff found: " + job);
+
+					var section = document.getElementById(job + "-Content").getElementsByClassName("Buffs");
+					var container = document.createElement("div");
+					container.className = "SkillDescription"
+					//container.style.display = "inline-block";
+					//container.style.position = "relative";
+
+					//var checkbox = document.createElement("input");
+					//checkbox.type = "checkbox";
+					//checkbox.style.display = "inline-block";
+					var image = document.createElement("img");
+					image.src = buffs.skillsList[j].source;
+					image.width = "30";
+					image.height = "30";
+					image.style.verticalAlign = "middle";
+					image.style.paddingRight = "10";
+					var skillname = document.createElement("div");
+					skillname.style.display = "inline-block";
+					skillname.innerText = buffs.skillsList[j].name + " (Level " + buffs.skillsList[j].level + ") - Cooldown: " + buffs.skillsList[j].cooldown + " Seconds";
+
+					//container.appendChild(checkbox);
+					container.appendChild(image);
+					container.appendChild(skillname);
+					section[0].parentElement.appendChild(container);
+				}
+			}
+		}
+
+
+		var mitigationsadded = false;
+		//Parsing buffs
+		for (j = 0; j < mitigation.skillsList.length; j++) {
+			//console.log(buffs.skillsList[j].job + " " + buffs.skillsList[j].name);
+			if (mitigation.skillsList[j].job === job) {
+				if (document.getElementById(job + "-Content").getElementsByClassName("Mitigations")) {
+					if (mitigationsadded == false) {
+						var sectionTitle = document.createElement("h4");
+						sectionTitle.className = "Mitigations";
+						sectionTitle.innerText = "Raidwide Defensive Skills"
+						document.getElementById(job + "-Content").appendChild(sectionTitle);
+						mitigationsadded = true;
+					}
+					//console.log("buff found: " + job);
+
+					var section = document.getElementById(job + "-Content").getElementsByClassName("Mitigations");
+					var container = document.createElement("div");
+					container.className = "SkillDescription"
+					//container.style.display = "inline-block";
+					//container.style.position = "relative";
+
+					//var checkbox = document.createElement("input");
+					//checkbox.type = "checkbox";
+					//checkbox.style.display = "inline-block";
+					var image = document.createElement("img");
+					image.src = mitigation.skillsList[j].source;
+					image.width = "30";
+					image.height = "30";
+					image.style.verticalAlign = "middle";
+					image.style.paddingRight = "10";
+					var skillname = document.createElement("div");
+					skillname.style.display = "inline-block";
+					skillname.innerText = mitigation.skillsList[j].name + " (Level " + mitigation.skillsList[j].level + ") - Cooldown: " + mitigation.skillsList[j].cooldown + " Seconds";
+
+					//container.appendChild(checkbox);
+					container.appendChild(image);
+					container.appendChild(skillname);
+					section[0].parentElement.appendChild(container);
+				}
+			}
+		}
+	}
 </script>

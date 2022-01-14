@@ -26,6 +26,7 @@ class Buffs
 
 		//Physical range DPS
 		this.skillsList.push(new Skill("Brd", "Battle Voice", 50, "76", 120, 15))
+		this.skillsList.push(new Skill("Brd", "Radiant Finale", 90, "64B9", 110, 15)) //Todo test code
 		this.skillsList.push(new Skill("Dnc", "Technical Step", 70, "3E7E", 120, 15))
 
 		//Magical range DPS
@@ -72,17 +73,20 @@ class Mitigations
 
 		//Magical range DPS
 		this.skillsList.push(new Skill("Rdm", "Addle", 8, "1D88", 90, 10))
+		this.skillsList.push(new Skill("Rdm", "Magick Barrier", 86, "6501", 120, 10))
 		this.skillsList.push(new Skill("Smn", "Addle", 8, "1D88", 90, 10))
 		this.skillsList.push(new Skill("Blm", "Addle", 8, "1D88", 90, 10))
 
 		//Healers
-		this.skillsList.push(new Skill("Whm", "Temperance", 80, "4098", 120, 20))
 		this.skillsList.push(new Skill("Whm", "Asylum", 52, "DF1", 90, 24))
+		this.skillsList.push(new Skill("Whm", "Temperance", 80, "4098", 120, 20))
 		this.skillsList.push(new Skill("Sch", "Fey Illumination", 40, "409A", 120, 20))
 		this.skillsList.push(new Skill("Sch", "Sacred Soil", 50, "BC", 30, 15))
+		this.skillsList.push(new Skill("Sch", "Expedient", 90, "650C", 120, 20))
 		this.skillsList.push(new Skill("Ast", "Collective Unconscious", 58, "E1D", 60, 20))
-		this.skillsList.push(new Skill("Sge", "Panhaima", 80, "5EF7", 120, 15))
-		this.skillsList.push(new Skill("Sge", "Holos", 76, "5EF6", 120, 20))
+		this.skillsList.push(new Skill("Ast", "Exaltation", 86, "6511", 60, 8))  //TODO test code
 		this.skillsList.push(new Skill("Sge", "Kerachole", 50, "5EEA", 30, 15))
+		this.skillsList.push(new Skill("Sge", "Holos", 76, "5EF6", 120, 20))
+		this.skillsList.push(new Skill("Sge", "Panhaima", 80, "5EF7", 120, 15))
 	}
 }
