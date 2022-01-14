@@ -7,8 +7,9 @@
     <script src="js/PlayersManager.js"></script>
     <script src="js/Columns.js"></script>
     <script>
-		if (localStorage.getItem("Rescale") == null || localStorage.getItem("Rescale") == 0)
-			localStorage.getItem("Rescale") = 1;
+        if (localStorage.getItem("Rescale") == null || localStorage.getItem("Rescale") == 0) {
+            localStorage.setItem("Rescale", 1);
+        }
         //
         // プラグイン側から以下のような ActXiv オブジェクトとしてデータが提供される
         //
