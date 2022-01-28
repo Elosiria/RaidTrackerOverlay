@@ -22,7 +22,7 @@ class StoredUserSettings
 			this.Rescale = 1.0;
 
 
-		this.AvailableColumnsData = ['Job without background', 'Job with background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
+		this.AvailableColumnsData = ['Job without background', 'Job with background', 'Player Name', 'Tinctures', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
 		this.DefaultUsedColumnsData = ['Job without background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
 		if (localStorage.getItem("selectedColumns") !== null)
 			this.UsedColumnsData = localStorage.getItem("selectedColumns").split(",");

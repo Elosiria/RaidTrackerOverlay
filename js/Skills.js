@@ -12,6 +12,43 @@ class Skill
 		this.source = "images/Skills/" + job + "/" + name + ".png"
 	}
 }
+
+class Tinctures {
+	constructor() {
+		this.skillsList = [];
+
+		//Tanks
+		this.skillsList.push(new Skill("Pld", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("War", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Drk", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Gnb", "Medicated", 1, "31", 270, 30))
+
+		//Melee DPS
+		this.skillsList.push(new Skill("Mnk", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Drg", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Nin", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Sam", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Rpr", "Medicated", 1, "31", 270, 30))
+
+		//Physical range DPS
+		this.skillsList.push(new Skill("Brd", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Mch", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Dnc", "Medicated", 1, "31", 270, 30))
+
+		//Magical range DPS
+		this.skillsList.push(new Skill("Blm", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Smn", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Rdm", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Blu", "Medicated", 1, "31", 270, 30))
+
+		//Healers
+		this.skillsList.push(new Skill("Whm", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Sch", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Ast", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Sge", "Medicated", 1, "31", 270, 30))
+	}
+}
+
 class Buffs
 {
 	constructor()

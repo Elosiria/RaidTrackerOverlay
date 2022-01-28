@@ -7,6 +7,7 @@ class PlayersManager
 		this.buffList.skillsList.push(new Skill("-", "Attack", "07", 0, 0))
 		this.mitigationsList = new Mitigations();
 		this.mitigationsList.skillsList.push(new Skill("-", "Attack", "07", 0, 0))
+		this.tincturesList = new Tinctures();
 		this.playerCharacter = "";
 	}
 	
@@ -51,6 +52,7 @@ class PlayersManager
 		{
 			var skillRef = logData[2];
 			var skillName = logData[3];
+			var duration = logData[4];
 			var playerName = logData[6];
 			
 			var playerFound = false;
@@ -75,8 +77,17 @@ class PlayersManager
 					}
 				}
 			}
-			
-			return;
+
+			for (var i = 0; i < this.tincturesList.skillsList.length; i++) {
+				if (this.tincturesList.skillsList[i].name === skillName && this.tincturesList.skillsList[i].reference === skillRef && duration > 0) {
+					isValidSkill = true;
+					//console.log("Skill used: " + skillName);	
+				}
+			}
+
+			if (isValidSkill === false) {
+				return;
+			}
 		}
 
 		
@@ -146,6 +157,7 @@ class Player
 		this.name = name;
 		this.buffs = new Buffs()
 		this.mitigations = new Mitigations()
+		this.tinctures = new Tinctures()
 		this.bluType = "Dps"
 	}
 	
@@ -164,6 +176,14 @@ class Player
 			if(this.mitigations.skillsList[i].name === skillName)
 			{
 				this.mitigations.skillsList[i].lastUsage = new Date();
+			}
+		}
+
+		for (var i = 0; i < this.tinctures.skillsList.length; i++)
+		{
+			if (this.tinctures.skillsList[i].name === skillName)
+			{
+				this.tinctures.skillsList[i].lastUsage = new Date();
 			}
 		}
 	}
@@ -218,6 +238,28 @@ class Player
 				else
 				{
 					this.mitigations.skillsList[i].lastUsage = null;
+					return "Off Cooldown";
+				}
+			}
+		}
+
+
+		for (var i = 0; i < this.tinctures.skillsList.length; i++) {
+			if (this.tinctures.skillsList[i].name === skillName) {
+				if (this.tinctures.skillsList[i].lastUsage === null) {
+					return "Off Cooldown";
+				}
+
+				var difference = (new Date() - this.tinctures.skillsList[i].lastUsage) / 1000;
+				if (difference < this.tinctures.skillsList[i].duration) {
+					//console.log("difference = " + difference);
+					return "Active";
+				}
+				else if (difference < this.tinctures.skillsList[i].cooldown) {
+					return "On Cooldown;" + Math.floor(this.tinctures.skillsList[i].cooldown - difference);
+				}
+				else {
+					this.tinctures.skillsList[i].lastUsage = null;
 					return "Off Cooldown";
 				}
 			}

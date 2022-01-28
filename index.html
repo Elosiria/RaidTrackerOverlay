@@ -378,14 +378,16 @@
                         if (typeof bodyDefine[i].text === 'function') {
                             cellText = bodyDefine[i].text(combatant, combatantIndex);
                         } else {
-                            if (bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}") {
+							if (bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}" || bodyDefine[i].text === "{Tinctures}" ) {
                                 cellText = null;
                                 var player = playerManager.getPlayerByName(combatantName);
 
                                 var playerJob = parseActFormat("{Job}", combatant);
                                 var list = player.buffs;
                                 if (bodyDefine[i].text === "{Mitigations}")
-                                    list = player.mitigations;
+									list = player.mitigations;
+								if (bodyDefine[i].text === "{Tinctures}")
+									list = player.tinctures;
 
                                 for (j = 0; j < list.skillsList.length; j++) {
                                     if (list.skillsList[j].job === playerJob) {
@@ -396,7 +398,9 @@
                                         //img.style.display = "inline-block";
                                         //img.style.float = "left";
 
-                                        var skillStatus = player.getSkillStatus(list.skillsList[j].name);
+
+										var skillStatus = player.getSkillStatus(list.skillsList[j].name);
+                                        //console.log("Skill: " + list.skillsList[j].name + " - " + skillStatus); //debug
                                         skillStatus = skillStatus + "";
                                         skillStatus = skillStatus.split(";")
 
@@ -421,6 +425,12 @@
                                             div.style.top = "50%";
                                             div.style.left = "50%";
                                             div.style.transform = "translate(-50%, -50%)";
+                                            if (skillStatus[1] > 99) {
+                                                div.style.fontSize = 11 * localStorage.getItem("Rescale") + "px";
+                                            }
+                                            else {
+                                                div.style.fontSize = 12 * localStorage.getItem("Rescale") + "px";
+                                            }
 
                                             container.appendChild(img);
                                             container.appendChild(div);
@@ -474,10 +484,12 @@
                         }
                         cell.innerHTML = cellHTML;
                     }
-                    // 幅設定
-                    cell.style.width = bodyDefine[i].width;
+
+					// 幅設定
+					cell.style.width = bodyDefine[i].width;
                     cell.style.maxWidth = bodyDefine[i].width;
                     cell.style.fontSize = 12 * localStorage.getItem("Rescale") + "px";
+
                     // 行構え設定
                     if (typeof (bodyDefine[i].align) !== 'undefined') {
                         cell.style.textAlign = bodyDefine[i].align;
