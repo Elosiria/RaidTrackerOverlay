@@ -80,6 +80,12 @@ ul, p {
 	text-shadow: -1px 0 2px #961f17, 0 1px 2px #961f17, 1px 0 2px #961f17, 0 -1px 2px #961f17;
 	/*background-color: rgba(0,0,0,0.8);*/
 }
+
+.adding {
+	color: #DED7BE;
+	text-shadow: -1px 0 2px #05960e, 0 1px 2px #961f17, 1px 0 2px #05960e, 0 -1px 2px #05960e;
+	/*background-color: rgba(0,0,0,0.8);*/
+}
 /* Style the tab */
 .tab {
 	overflow: hidden;

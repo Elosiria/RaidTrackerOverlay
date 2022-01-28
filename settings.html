@@ -20,8 +20,27 @@
 			//node.style.backgroundColor = item
 			//node.style.backgroundColor = node.style.backgroundColor.length > 0
 			//? item : 'lightblue'
-			node.addEventListener('drag', setDraggingAvailableColumn)
-			node.innerText = item
+			//node.addEventListener('drag', setDraggingAvailableColumn)
+			//node.innerText = item
+			//list.appendChild(node)
+
+			var label = document.createElement("label");
+			label.style.display = "inline-block";
+			label.innerText = item
+			label.addEventListener('drag', setDraggingAvailableColumn)
+
+			var addButton = document.createElement("button");
+			addButton.innerText = "+";
+			addButton.style.display = "inline-block";
+			addButton.style.backgroundColor = "transparent";
+			addButton.style.border = "none";
+			addButton.style.outline = "none";
+			addButton.className = "adding";
+			addButton.id = item
+			addButton.addEventListener('click', addUseColumn)
+
+			node.appendChild(label)
+			node.appendChild(addButton)
 			list.appendChild(node)
 		})
 	}
@@ -103,6 +122,17 @@
 
 			renderUsedColumns(userSettings.UsedColumnsData)
 		}
+	}
+
+	const addUseColumn = (e) => {
+		userSettings.UsedColumnsData.push(e.target.id);
+		renderUsedColumns(userSettings.UsedColumnsData);
+		//if (userSettings.UsedColumnsData.length > 1) {
+		//	var index1 = userSettings.UsedColumnsData.indexOf(e.target.id);
+		//	userSettings.UsedColumnsData.splice(index1, 1)
+
+		//	renderUsedColumns(userSettings.UsedColumnsData)
+		//}
 	}
 
 	const setDraggingAvailableColumn = (e) => {
