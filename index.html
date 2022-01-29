@@ -467,7 +467,9 @@
                             }
                             else if (bodyDefine[i].text === "{encdps}") {
                                 var playerDPS = Math.floor(parseActFormat("{encdps}", combatant));
-                                cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+								cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+								//debug purposes
+								console.log("playerDPS: " + playerDPS);
                                 //cell.innerText = playerDPS;
                             }
                             else {
@@ -502,6 +504,8 @@
                 combatantIndex++;
 
                 currentDPS = parseActFormat("{encdps}", combatant)
+                //debug purposes
+				console.log("currentDPS: " + currentDPS);
                 currentJob = parseActFormat("{Job}", combatant)
                 var gauge = newTableBody.insertRow(newTableBody.rows.length);
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
