@@ -466,10 +466,13 @@
                                 }
                             }
                             else if (bodyDefine[i].text === "{encdps}") {
-                                var playerDPS = Math.floor(parseActFormat("{encdps}", combatant));
+								var rawDPS = parseActFormat("{encdps}", combatant);
+								//rawDPS = "1651,6"; //debug purposes
+                                var localizedDPS = rawDPS.replace(",", ".");
+								var playerDPS = Math.floor(localizedDPS);
 								cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 								//debug purposes
-								console.log("playerDPS: " + playerDPS);
+								//console.log("playerDPS: " + playerDPS);
                                 //cell.innerText = playerDPS;
                             }
                             else {
@@ -503,9 +506,11 @@
                 }
                 combatantIndex++;
 
-                currentDPS = parseActFormat("{encdps}", combatant)
-                //debug purposes
-				console.log("currentDPS: " + currentDPS);
+				var rawDPS = parseActFormat("{encdps}", combatant);
+				//currentDPS = parseActFormat("{encdps}", combatant) //old version
+				currentDPS = rawDPS.replace(",", ".");
+    //            //debug purposes
+				//console.log("currentDPS: " + currentDPS);
                 currentJob = parseActFormat("{Job}", combatant)
                 var gauge = newTableBody.insertRow(newTableBody.rows.length);
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
