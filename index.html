@@ -203,7 +203,7 @@
 
             //If the user chooses a background image
             var encounterElem = document.getElementById('encounter');
-			if (localStorage.getItem("UseFooterInsteadOfHeader") === "true") {
+            if (localStorage.getItem("UseFooterInsteadOfHeader") === "true") {
                 document.getElementById('combatantTable').after(document.getElementById('header'));
                 document.getElementById('header').className = "footer";
                 //document.getElementById('settings').style = "float:left";
@@ -256,13 +256,13 @@
 
 
             //******************************** Debug ********************************************************
-			//var lookup = data.Combatant;
-			//for (var key in lookup) {
-   //             // check if the property/key is defined in the object itself, not in parent
-   //             if (lookup.hasOwnProperty(key)) {
-			//		console.log(key, lookup[key]);
-			//	}
-			//}
+            //var lookup = data.Combatant["YOU"];
+            //for (var key in lookup) {
+            //             // check if the property/key is defined in the object itself, not in parent
+            //             if (lookup.hasOwnProperty(key)) {
+            //		console.log(key, lookup[key]);
+            //	}
+            //}
         }
 
         // ヘッダを更新する
@@ -270,11 +270,11 @@
             var table = document.getElementById('combatantTable');
             var tableHeader = document.createElement("thead");
             tableHeader.id = "combatantTableHeader";
-			var headerRow = tableHeader.insertRow();
-			headerRow.style.fontSize = 12 * localStorage.getItem("Rescale") + "px";
+            var headerRow = tableHeader.insertRow();
+            headerRow.style.fontSize = 12 * localStorage.getItem("Rescale") + "px";
 
             for (var i = 0; i < headerDefine.length; i++) {
-				var cell = document.createElement("th");
+                var cell = document.createElement("th");
                 // テキスト設定
                 if (typeof headerDefine[i].text !== 'undefined') {
                     cell.innerText = headerDefine[i].text;
@@ -325,15 +325,15 @@
             else {
                 document.body.style = "background: none";
             }
-			if (localStorage.getItem("Rescale") !== "") {
-               // document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
+            if (localStorage.getItem("Rescale") !== "") {
+                // document.body.style = document.body.style + ";zoom:" + localStorage.getItem("OverlayScaling");
             }
 
-			if (localStorage.getItem("UseThinnerHeader") === "true") {
-				document.getElementById("header").style = "font-size:" + 12 * localStorage.getItem("Rescale") + "px;padding:0px"
+            if (localStorage.getItem("UseThinnerHeader") === "true") {
+                document.getElementById("header").style = "font-size:" + 12 * localStorage.getItem("Rescale") + "px;padding:0px"
             }
             else {
-				document.getElementById("header").style = "font-size:" + 15 * localStorage.getItem("Rescale") + "px;padding:5px"
+                document.getElementById("header").style = "font-size:" + 15 * localStorage.getItem("Rescale") + "px;padding:5px"
             }
 
             // 要素取得＆作成
@@ -356,7 +356,7 @@
             for (var combatantName in data.Combatant) {
                 currentCombatant++;
 
-                if(currentCombatant > maxCombatants)
+                if (currentCombatant > maxCombatants)
                     break;
 
                 var combatant = data.Combatant[combatantName];
@@ -364,8 +364,8 @@
                 if (topDPS === -1)
                     topDPS = parseActFormat("{encdps}", combatant)
 
-				var rowHeight = 20 * localStorage.getItem("Rescale");
-				var imageSize = 18 * localStorage.getItem("Rescale");
+                var rowHeight = 20 * localStorage.getItem("Rescale");
+                var imageSize = 18 * localStorage.getItem("Rescale");
                 tableRow.style.height = rowHeight + "px";
                 tableRow.style.transform = "translateY(1px)";
                 //tableRow.style.top =  "50%";
@@ -378,16 +378,16 @@
                         if (typeof bodyDefine[i].text === 'function') {
                             cellText = bodyDefine[i].text(combatant, combatantIndex);
                         } else {
-							if (bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}" || bodyDefine[i].text === "{Tinctures}" ) {
+                            if (bodyDefine[i].text === "{Mitigations}" || bodyDefine[i].text === "{Buffs}" || bodyDefine[i].text === "{Tinctures}") {
                                 cellText = null;
                                 var player = playerManager.getPlayerByName(combatantName);
 
                                 var playerJob = parseActFormat("{Job}", combatant);
                                 var list = player.buffs;
                                 if (bodyDefine[i].text === "{Mitigations}")
-									list = player.mitigations;
-								if (bodyDefine[i].text === "{Tinctures}")
-									list = player.tinctures;
+                                    list = player.mitigations;
+                                if (bodyDefine[i].text === "{Tinctures}")
+                                    list = player.tinctures;
 
                                 for (j = 0; j < list.skillsList.length; j++) {
                                     if (list.skillsList[j].job === playerJob) {
@@ -399,7 +399,7 @@
                                         //img.style.float = "left";
 
 
-										var skillStatus = player.getSkillStatus(list.skillsList[j].name);
+                                        var skillStatus = player.getSkillStatus(list.skillsList[j].name);
                                         //console.log("Skill: " + list.skillsList[j].name + " - " + skillStatus); //debug
                                         skillStatus = skillStatus + "";
                                         skillStatus = skillStatus.split(";")
@@ -466,13 +466,13 @@
                                 }
                             }
                             else if (bodyDefine[i].text === "{encdps}") {
-								var rawDPS = parseActFormat("{encdps}", combatant);
-								//rawDPS = "1651,6"; //debug purposes
+                                var rawDPS = parseActFormat("{encdps}", combatant);
+                                //rawDPS = "1651,6"; //debug purposes
                                 var localizedDPS = rawDPS.replace(",", ".");
-								var playerDPS = Math.floor(localizedDPS);
-								cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-								//debug purposes
-								//console.log("playerDPS: " + playerDPS);
+                                var playerDPS = Math.floor(localizedDPS);
+                                cell.innerText = playerDPS.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                //debug purposes
+                                //console.log("playerDPS: " + playerDPS);
                                 //cell.innerText = playerDPS;
                             }
                             else {
@@ -490,8 +490,8 @@
                         cell.innerHTML = cellHTML;
                     }
 
-					// 幅設定
-					cell.style.width = bodyDefine[i].width;
+                    // 幅設定
+                    cell.style.width = bodyDefine[i].width;
                     cell.style.maxWidth = bodyDefine[i].width;
                     cell.style.fontSize = 12 * localStorage.getItem("Rescale") + "px";
 
@@ -506,15 +506,15 @@
                 }
                 combatantIndex++;
 
-				var rawDPS = parseActFormat("{encdps}", combatant);
-				//currentDPS = parseActFormat("{encdps}", combatant) //old version
-				currentDPS = rawDPS.replace(",", ".");
-    //            //debug purposes
-				//console.log("currentDPS: " + currentDPS);
+                var rawDPS = parseActFormat("{encdps}", combatant);
+                //currentDPS = parseActFormat("{encdps}", combatant) //old version
+                currentDPS = rawDPS.replace(",", ".");
+                //            //debug purposes
+                //console.log("currentDPS: " + currentDPS);
                 currentJob = parseActFormat("{Job}", combatant)
                 var gauge = newTableBody.insertRow(newTableBody.rows.length);
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
-				gauge.style.height = 2 * localStorage.getItem("Rescale") + "px";
+                gauge.style.height = 2 * localStorage.getItem("Rescale") + "px";
                 gauge.style.position = "absolute";
                 if (playerJob !== "")
                     gauge.style.background = gaugesDefine[currentJob];

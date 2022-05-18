@@ -21,7 +21,6 @@ class StoredUserSettings
 		if (this.Rescale == null)
 			this.Rescale = 1.0;
 
-
 		this.AvailableColumnsData = ['Job without background', 'Job with background', 'Player Name', 'Tinctures', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
 		this.DefaultUsedColumnsData = ['Job without background', 'Player Name', 'Raidwide offensive skills', 'Raidwide defensive skills', 'Percentage DPS', 'Current DPS', 'Deaths']
 		if (localStorage.getItem("selectedColumns") !== null)
@@ -34,6 +33,14 @@ class StoredUserSettings
 		//console.log("UseThinnerHeader: " + this.UseThinnerHeader);
 		//console.log("UseFooterInsteadOfHeader: " + this.UseFooterInsteadOfHeader);
 		//console.log("Rescale: " + this.Rescale);
+		//console.log("AvailableColumnsData: ")
+		//this.AvailableColumnsData.forEach(item => {
+		//	console.log("	" + item);
+		//}
+		//console.log("UsedColumnsData: " + )
+		//this.UsedColumnsData.forEach(item => {
+		//	console.log("	" + item);
+		//}
 	}
 
 	Save() {

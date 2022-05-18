@@ -55,7 +55,7 @@ class Buffs
 	{
 		this.skillsList = [];
 		//Melee DPS
-		this.skillsList.push(new Skill("Nin", "Trick Attack", 18, "8D2", 60, 15))
+		this.skillsList.push(new Skill("Nin", "Mug", 15, "8C8", 120, 20))
 		this.skillsList.push(new Skill("Drg", "Battle Litany", 52, "DE5", 120, 15))
 		this.skillsList.push(new Skill("Drg", "Dragon Sight", 66, "1CE6", 120, 15))
 		this.skillsList.push(new Skill("Mnk", "Brotherhood", 70, "1CE4", 120, 15))
