@@ -26,7 +26,7 @@ class StoredUserSettings
 		if (localStorage.getItem("selectedColumns") !== null)
 			this.UsedColumnsData = localStorage.getItem("selectedColumns").split(",");
 		else
-			this.UsedColumnsData = defaultUsedColumnsData;
+			this.UsedColumnsData = this.DefaultUsedColumnsData;
 
 		//console.log("UseBackgroundImage: " + this.UseBackgroundImage);
 		//console.log("BackgroundImageUrl: " + this.BackgroundImageUrl);
