@@ -512,17 +512,18 @@
                 //            //debug purposes
                 //console.log("currentDPS: " + currentDPS);
                 currentJob = parseActFormat("{Job}", combatant)
-                var gauge = newTableBody.insertRow(newTableBody.rows.length);
+				var gauge = newTableBody.insertRow(newTableBody.rows.length);
+				console.log("Gauge: currentDPS=" + currentDPS + " topDPS=" + topDPS + " encdps=" + parseActFormat("{encdps}", combatant) + " Math.floor=" + Math.floor(currentDPS / topDPS * 100));
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
                 gauge.style.height = 2 * localStorage.getItem("Rescale") + "px";
                 gauge.style.position = "absolute";
                 if (playerJob !== "") {
                     gauge.style.background = gaugesDefine[currentJob];
-                    console.log("Gauge: Width=" + gauge.style.width + " Height=" + gauge.style.height + " Position=" + gauge.style.position + "Color=" + gaugesDefine[currentJob]);
+                    //console.log("Gauge: Width=" + gauge.style.width + " Height=" + gauge.style.height + " Position=" + gauge.style.position + "Color=" + gaugesDefine[currentJob]);
                 }
                 else {
 					gauge.style.background = "rgb(255,255,255)";
-                    console.log("Gauge: Width=" + gauge.style.width + " Height=" + gauge.style.height + " Position=" + gauge.style.position + "Color=" + "rgb(255, 255, 255)");
+                    //console.log("Gauge: Width=" + gauge.style.width + " Height=" + gauge.style.height + " Position=" + gauge.style.position + "Color=" + "rgb(255, 255, 255)");
                 }
             }
 
