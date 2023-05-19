@@ -91,7 +91,7 @@ class Mitigations
 		this.skillsList.push(new Skill("Drk", "Reprisal", 22, "1D6F", 60, 10))
 		this.skillsList.push(new Skill("Drk", "Dark Missionary", 76, "4057", 90, 15))
 		this.skillsList.push(new Skill("Gnb", "Reprisal", 22, "1D6F", 60, 10))
-		this.skillsList.push(new Skill("Gnb", "Heart Of Light", 64, "3F20", 90, 15))
+		this.skillsList.push(new Skill("Gnb", "Heart of Light", 64, "3F20", 90, 15))
 
 		//Melee DPS
 		this.skillsList.push(new Skill("Nin", "Feint", 22, "1D7D", 90, 10))
@@ -103,10 +103,11 @@ class Mitigations
 		this.skillsList.push(new Skill("Rpr", "Arcane Crest", 40, "5F54", 30, 15))
 
 		//Physical range DPS
-		this.skillsList.push(new Skill("Brd", "Troubadour", 62, "1CED", 120, 15))
-		this.skillsList.push(new Skill("Dnc", "Shield Samba", 56, "3E8C", 120, 15))
+		this.skillsList.push(new Skill("Brd", "Troubadour", 62, "1CED", 90, 15))
+		this.skillsList.push(new Skill("Brd", "Nature's Minne", 66, "1CF0", 120, 15))
+		this.skillsList.push(new Skill("Dnc", "Shield Samba", 56, "3E8C", 90, 15))
 		this.skillsList.push(new Skill("Dnc", "Improvisation", 80, "3E8E", 120, 15))
-		this.skillsList.push(new Skill("Mch", "Tactician", 56, "41F9", 120, 15))
+		this.skillsList.push(new Skill("Mch", "Tactician", 56, "41F9", 90, 15))
 
 		//Magical range DPS
 		this.skillsList.push(new Skill("Rdm", "Addle", 8, "1D88", 90, 10))
@@ -121,7 +122,6 @@ class Mitigations
 		this.skillsList.push(new Skill("Sch", "Sacred Soil", 50, "BC", 30, 15))
 		this.skillsList.push(new Skill("Sch", "Expedient", 90, "650C", 120, 20))
 		this.skillsList.push(new Skill("Ast", "Collective Unconscious", 58, "E1D", 60, 20))
-		this.skillsList.push(new Skill("Ast", "Exaltation", 86, "6511", 60, 8))  //TODO test code
 		this.skillsList.push(new Skill("Sge", "Kerachole", 50, "5EEA", 30, 15))
 		this.skillsList.push(new Skill("Sge", "Holos", 76, "5EF6", 120, 20))
 		this.skillsList.push(new Skill("Sge", "Panhaima", 80, "5EF7", 120, 15))

@@ -516,9 +516,9 @@
                 gauge.style.width = Math.floor(currentDPS / topDPS * 100) + "%";
                 gauge.style.height = 2 * localStorage.getItem("Rescale") + "px";
                 gauge.style.position = "absolute";
-                if (playerJob !== "")
-                    gauge.style.background = gaugesDefine[currentJob];
-                else
+                //if (playerJob !== "")
+                //    gauge.style.background = gaugesDefine[currentJob];
+                //else
                     gauge.style.background = "rgb(255,255,255)";
             }
 
