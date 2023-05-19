@@ -142,6 +142,12 @@
         addOverlayListener("LogLine", function (e) {
             //var res = e.line.split(",");
             playerManager.update(e.line);
+
+			if (e.line.toString().includes("33,202") && e.line.toString().includes("00,00,00"))
+			{
+				playerManager.reset();
+                //console.log("Wipe");
+            }
             /*if(e.line.includes("Elyre Kayato") && e.line.includes("Fountain"))
             {
                 used = true;
@@ -161,7 +167,11 @@
 
         addOverlayListener("ChangePrimaryPlayer", function (e) {
             playerManager.playerCharacter = e.charName;
-        });
+		});
+
+		addOverlayListener("ChangeZone", function (e) {
+			//console.log("ChangeZone" + e.zoneID);
+		});
 
         /*addOverlayListener("ChangeZone", function (e) {
             console.log("ChangeZone");
@@ -226,10 +236,6 @@
             }
             console.log(" ");*/
             //console.log(data.Encounter.name);
-
-            if (data.isActive === "false") {
-                playerManager.reset();
-            }
 
             //console.log("updateEncounter: " + parseActFormat("{title}", data.Encounter));
             // テキスト取得
@@ -513,7 +519,7 @@
                 //console.log("currentDPS: " + currentDPS);
                 currentJob = parseActFormat("{Job}", combatant)
 				var gauge = newTableBody.insertRow(newTableBody.rows.length);
-				console.log("Gauge: currentDPS=" + currentDPS + " topDPS=" + topDPS + " encdps=" + parseActFormat("{encdps}", combatant) + " Math.floor=" + Math.floor(currentDPS / topDPS * 100));
+				//console.log("Gauge: currentDPS=" + currentDPS + " topDPS=" + topDPS + " encdps=" + parseActFormat("{encdps}", combatant) + " Math.floor=" + Math.floor(currentDPS / topDPS * 100));
 				gauge.style.width = Math.floor(currentDPS.replace(",", ".") / topDPS.replace(",", ".") * 100) + "%";
                 gauge.style.height = 2 * localStorage.getItem("Rescale") + "px";
                 gauge.style.position = "absolute";

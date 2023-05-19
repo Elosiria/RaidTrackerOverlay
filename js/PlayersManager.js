@@ -53,12 +53,13 @@ class PlayersManager
 			var skillRef = logData[2];
 			var skillName = logData[3];
 			var duration = logData[4];
-			var playerName = logData[6];
+			var originPlayerName = logData[6];
+			var affectedPlayerName = logData[8];
 			
 			var playerFound = false;
 			for(var i = 0; i < this.playerList.length; i++)
 			{
-				if(playerName === this.playerList[i].name)
+				if (originPlayerName === originPlayerName && affectedPlayerName === this.playerList[i].name)
 				{
 					if(skillName === "Aetherial Mimicry: Tank" && skillRef === "84c")
 					{
@@ -94,7 +95,7 @@ class PlayersManager
 		var playerFound = false;
 		for(var i = 0; i < this.playerList.length; i++)
 		{
-			if(playerName === this.playerList[i].name)
+			if (originPlayerName === originPlayerName && affectedPlayerName === this.playerList[i].name)
 			{
 				playerFound = true;
 				if(skillName !== "Attack")
@@ -143,9 +144,8 @@ class PlayersManager
 
 	reset()
 	{
-		while(this.playerList.length > 24)
-		{
-			this.playerList.pop();
+		for (var i = 0; i < this.playerList.length; i++) {
+			this.playerList[i].reset();
 		}
 	}
 }
@@ -263,6 +263,20 @@ class Player
 					return "Off Cooldown";
 				}
 			}
+		}
+	}
+
+	reset() {
+		for (var i = 0; i < this.buffs.skillsList.length; i++) {
+			this.buffs.skillsList[i].lastUsage = null;
+		}
+
+		for (var i = 0; i < this.mitigations.skillsList.length; i++) {
+			this.mitigations.skillsList[i].lastUsage = null;
+		}
+
+		for (var i = 0; i < this.tinctures.skillsList.length; i++) {
+			this.tinctures.skillsList[i].lastUsage = null;
 		}
 	}
 }
