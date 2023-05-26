@@ -28,7 +28,7 @@ class PlayersManager
 
 		for (var i = 0; i < this.buffList.skillsList.length; i++) {
 			if (this.buffList.skillsList[i].name === skillName && this.buffList.skillsList[i].reference === skillRef) {
-				console.log(playerName + " used the buff " + skillName);
+				//console.log(playerName + " used the buff " + skillName);
 				this.useSkill(playerName, skillName);
 				return;
 			}
@@ -36,7 +36,7 @@ class PlayersManager
 
 		for (var i = 0; i < this.mitigationsList.skillsList.length; i++) {
 			if (this.mitigationsList.skillsList[i].name === skillName && this.mitigationsList.skillsList[i].reference === skillRef) {
-				console.log(playerName + " used the mitigation " + skillName);
+				//console.log(playerName + " used the mitigation " + skillName);
 				this.useSkill(playerName, skillName);
 				return;
 			}
