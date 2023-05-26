@@ -18,106 +18,83 @@ class PlayersManager
 		var playerName = logData[3];
 		var skillRef = logData[4];
 		var skillName = logData[5];
+		var originPlayerName = "";
+		var affectedPlayerName = "";
 		
 		//Use this to find references of new skills
 		//console.log(logLine);
 
-		var isValidSkill = false;
-		for(var i = 0; i < this.buffList.skillsList.length; i++)
-		{
-			if(this.buffList.skillsList[i].name === skillName && this.buffList.skillsList[i].reference === skillRef)
-			{
-				isValidSkill = true;
-				//console.log("Skill used: " + skillName);	
-			}
-		}
+		var isTincture = false;
 
-		for(var i = 0; i < this.mitigationsList.skillsList.length; i++)
-		{
-			if(this.mitigationsList.skillsList[i].name === skillName && this.mitigationsList.skillsList[i].reference === skillRef)
-			{
-				isValidSkill = true;
-				//console.log("Skill used: " + skillName);	
-			}
-		}
-
-		//Buffs: playname at i = 3 and skill name at i = 5
-		/*for(var i = 0; i < logData.length; i++)
-		{
-			console.log("LogData[" + i + "] = " + logData[i]);	
-		}*/
-
-		//If this is not a skill or a not a skill to be tracked we exit the function
-		if(isValidSkill === false)
-		{
-			var skillRef = logData[2];
-			var skillName = logData[3];
-			var duration = logData[4];
-			var originPlayerName = logData[6];
-			var affectedPlayerName = logData[8];
-			
-			var playerFound = false;
-			for(var i = 0; i < this.playerList.length; i++)
-			{
-				if (originPlayerName === originPlayerName && affectedPlayerName === this.playerList[i].name)
-				{
-					if(skillName === "Aetherial Mimicry: Tank" && skillRef === "84c")
-					{
-						this.playerList[i].bluType = "Tank";
-						//console.log("Aetherial Mimicry: Tank");
-					}
-					else if(skillName === "Aetherial Mimicry: Dps" && skillRef === "84d")
-					{
-						this.playerList[i].bluType = "Dps";
-						//console.log("Aetherial Mimicry: Dps");
-					}
-					else if(skillName === "Aetherial Mimicry: Healer" && skillRef === "84e")
-					{
-						this.playerList[i].bluType = "Healer";
-						//console.log("Aetherial Mimicry: Healer");
-					}
-				}
-			}
-
-			for (var i = 0; i < this.tincturesList.skillsList.length; i++) {
-				if (this.tincturesList.skillsList[i].name === skillName && this.tincturesList.skillsList[i].reference === skillRef && duration > 0) {
-					isValidSkill = true;
-					//console.log("Skill used: " + skillName);	
-				}
-			}
-
-			if (isValidSkill === false) {
+		for (var i = 0; i < this.buffList.skillsList.length; i++) {
+			if (this.buffList.skillsList[i].name === skillName && this.buffList.skillsList[i].reference === skillRef) {
+				//console.log(playerName + " used the buff " + skillName);
+				this.useSkill(playerName, skillName);
 				return;
 			}
 		}
 
-		
-		var playerFound = false;
+		for (var i = 0; i < this.mitigationsList.skillsList.length; i++) {
+			if (this.mitigationsList.skillsList[i].name === skillName && this.mitigationsList.skillsList[i].reference === skillRef) {
+				//console.log(playerName + " used the mitigation " + skillName);
+				this.useSkill(playerName, skillName);
+				return;
+			}
+		}
+
+		//Non skills tracking
+		skillRef = logData[2];
+		skillName = logData[3];
+		originPlayerName = logData[6];
+		affectedPlayerName = logData[8];
+			
 		for(var i = 0; i < this.playerList.length; i++)
 		{
 			if (originPlayerName === originPlayerName && affectedPlayerName === this.playerList[i].name)
 			{
-				playerFound = true;
-				if(skillName !== "Attack")
+				if(skillName === "Aetherial Mimicry: Tank" && skillRef === "84c")
 				{
-					this.playerList[i].useSkill(skillName)
-					//console.log("Found player: " + playerName);
-					break;
+					this.playerList[i].bluType = "Tank";
+					//console.log("Aetherial Mimicry: Tank");
+				}
+				else if(skillName === "Aetherial Mimicry: Dps" && skillRef === "84d")
+				{
+					this.playerList[i].bluType = "Dps";
+					//console.log("Aetherial Mimicry: Dps");
+				}
+				else if(skillName === "Aetherial Mimicry: Healer" && skillRef === "84e")
+				{
+					this.playerList[i].bluType = "Healer";
+					//console.log("Aetherial Mimicry: Healer");
 				}
 			}
 		}
-		
-		if(playerFound === false)
-		{
-			var player = new Player(playerName)
-			if(skillName !== "Attack")
-			{
-				player.useSkill(skillName)
+
+		for (var i = 0; i < this.tincturesList.skillsList.length; i++) {
+			if (this.tincturesList.skillsList[i].name === skillName)
+				var duration = logData[4]; 
+				if (this.tincturesList.skillsList[i].reference === skillRef && duration > 0 && originPlayerName === affectedPlayerName) {
+					this.useSkill(originPlayerName, skillName);
+					return;
 			}
-			this.playerList.push(player);		
-			//console.log("playerList size" + this.playerList.length);	
-			//console.log("Added player: " + playerName);
 		}
+	}
+
+	useSkill(PlayerName, SkillName) {
+		if (SkillName === "Attack")
+			return;
+
+		for (var i = 0; i < this.playerList.length; i++) {
+			if (PlayerName === this.playerList[i].name) {
+				this.playerList[i].useSkill(SkillName)
+				return;
+			}
+		}
+
+		//Player added if not tracked yet
+		var player = new Player(playerName)
+		player.useSkill(skillName)
+		this.playerList.push(player);	
 	}
 
 	getPlayerByName(name)
