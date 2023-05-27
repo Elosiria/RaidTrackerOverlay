@@ -92,7 +92,7 @@ class PlayersManager
 		}
 
 		//Player added if not tracked yet
-		var player = new Player(playerName)
+		var player = new Player(PlayerName)
 		player.useSkill(skillName)
 		this.playerList.push(player);	
 	}
