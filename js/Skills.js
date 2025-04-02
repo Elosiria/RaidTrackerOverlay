@@ -65,12 +65,13 @@ class Buffs
 
 		//Physical range DPS
 		this.skillsList.push(new Skill("Brd", "Battle Voice", 50, "76", 120, 15))
-		this.skillsList.push(new Skill("Brd", "Radiant Finale", 90, "64B9", 110, 15)) //Todo test code
+		this.skillsList.push(new Skill("Brd", "Radiant Finale", 90, "64B9", 110, 15))
 		this.skillsList.push(new Skill("Dnc", "Technical Step", 70, "3E7E", 120, 15))
 
 		//Magical range DPS
 		this.skillsList.push(new Skill("Rdm", "Embolden", 58, "1D60", 120, 20))
 		this.skillsList.push(new Skill("Smn", "Searing Light", 66, "64C9", 120, 30))
+		this.skillsList.push(new Skill("Pct", "Starry Muse", 66, "8773", 120, 30))
 
 		//Healers
 		this.skillsList.push(new Skill("Sch", "Chain Stratagem", 66, "1D0C", 120, 15))
@@ -103,6 +104,7 @@ class Mitigations
 		this.skillsList.push(new Skill("Sam", "Feint", 22, "1D7D", 90, 10))
 		this.skillsList.push(new Skill("Rpr", "Feint", 22, "1D7D", 90, 10))
 		this.skillsList.push(new Skill("Rpr", "Arcane Crest", 40, "5F54", 30, 15))
+		this.skillsList.push(new Skill("Vpr", "Feint", 22, "1D7D", 90, 10))
 
 		//Physical range DPS
 		this.skillsList.push(new Skill("Brd", "Troubadour", 62, "1CED", 90, 15))
@@ -116,6 +118,8 @@ class Mitigations
 		this.skillsList.push(new Skill("Rdm", "Magick Barrier", 86, "6501", 120, 10))
 		this.skillsList.push(new Skill("Smn", "Addle", 8, "1D88", 90, 10))
 		this.skillsList.push(new Skill("Blm", "Addle", 8, "1D88", 90, 10))
+		this.skillsList.push(new Skill("Pct", "Addle", 8, "1D88", 90, 10))
+		this.skillsList.push(new Skill("Pct", " Tempera Grassa", 88, "877E", 120, 10))
 
 		//Healers
 		this.skillsList.push(new Skill("Whm", "Asylum", 52, "DF1", 90, 24))
