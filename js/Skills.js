@@ -29,6 +29,7 @@ class Tinctures {
 		this.skillsList.push(new Skill("Nin", "Medicated", 1, "31", 270, 30))
 		this.skillsList.push(new Skill("Sam", "Medicated", 1, "31", 270, 30))
 		this.skillsList.push(new Skill("Rpr", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Vpr", "Medicated", 1, "31", 270, 30))
 
 		//Physical range DPS
 		this.skillsList.push(new Skill("Brd", "Medicated", 1, "31", 270, 30))
@@ -39,6 +40,7 @@ class Tinctures {
 		this.skillsList.push(new Skill("Blm", "Medicated", 1, "31", 270, 30))
 		this.skillsList.push(new Skill("Smn", "Medicated", 1, "31", 270, 30))
 		this.skillsList.push(new Skill("Rdm", "Medicated", 1, "31", 270, 30))
+		this.skillsList.push(new Skill("Pct", "Medicated", 1, "31", 270, 30))
 		this.skillsList.push(new Skill("Blu", "Medicated", 1, "31", 270, 30))
 
 		//Healers
@@ -55,7 +57,7 @@ class Buffs
 	{
 		this.skillsList = [];
 		//Melee DPS
-		this.skillsList.push(new Skill("Nin", "Mug", 15, "8C8", 120, 20))
+		this.skillsList.push(new Skill("Nin", "Dokumori", 15, "905D", 120, 20))
 		this.skillsList.push(new Skill("Drg", "Battle Litany", 52, "DE5", 120, 15))
 		this.skillsList.push(new Skill("Drg", "Dragon Sight", 66, "1CE6", 120, 15))
 		this.skillsList.push(new Skill("Mnk", "Brotherhood", 70, "1CE4", 120, 15))
