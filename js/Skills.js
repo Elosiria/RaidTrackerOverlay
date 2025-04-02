@@ -119,7 +119,7 @@ class Mitigations
 		this.skillsList.push(new Skill("Smn", "Addle", 8, "1D88", 90, 10))
 		this.skillsList.push(new Skill("Blm", "Addle", 8, "1D88", 90, 10))
 		this.skillsList.push(new Skill("Pct", "Addle", 8, "1D88", 90, 10))
-		this.skillsList.push(new Skill("Pct", " Tempera Grassa", 88, "877E", 120, 10))
+		this.skillsList.push(new Skill("Pct", "Tempera Grassa", 88, "877E", 120, 10))
 
 		//Healers
 		this.skillsList.push(new Skill("Whm", "Asylum", 52, "DF1", 90, 24))
